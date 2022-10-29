@@ -9,6 +9,7 @@ import (
 type Handler interface {
 	CalculateTaxCode(c *fiber.Ctx) error
 	CalculatePersonData(c *fiber.Ctx) error
+	HandleError(c *fiber.Ctx, err error) error
 }
 
 type TaxCodeService interface {

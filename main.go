@@ -14,13 +14,13 @@ import (
 // @host localhost:8080
 // @BasePath /
 //
-//go:generate swag init
+//go:generate swag init --pd
 func main() {
 
 	taxCodeService := taxcode.NewTaxCodeService()
 	h := handler.NewHandler(taxCodeService)
 
-	app := fiber.New()
+	app := fiber.New(fiber.Config{ErrorHandler: h.HandleError})
 	swagger := app.Group("/swagger")
 	swagger.Get("/*", swaggerfiber.HandlerDefault)
 

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/mvmaasakkers/go-problemdetails"
 	"taxcode-converter/service"
 )
 
@@ -19,15 +20,16 @@ func NewHandler(service service.TaxCodeService) *Handler {
 // @Produce json
 // @Param CalculateTaxCodeRequest body service.CalculateTaxCodeRequest true "CalculateTaxCodeRequest"
 // @Success 200 {object} service.CalculateTaxCodeResponse
+// @Failure 400 {object} problemdetails.ProblemDetails
+// @Failure 404 {object} problemdetails.ProblemDetails
+// @Failure 500 {object} problemdetails.ProblemDetails
 // @Router /api/v1/taxcode:calculate-tax-code [post]
 func (h *Handler) CalculateTaxCode(c *fiber.Ctx) error {
 
 	req := new(service.CalculateTaxCodeRequest)
 
 	if err := c.BodyParser(req); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+		return err
 	}
 
 	data, _ := h.service.CalculateTaxCode(c.Context(), req)
@@ -40,17 +42,32 @@ func (h *Handler) CalculateTaxCode(c *fiber.Ctx) error {
 // @Produce json
 // @Param CalculatePersonDataRequest body service.CalculatePersonDataRequest true "CalculatePersonDataRequest"
 // @Success 200 {object} service.CalculatePersonDataResponse
+// @Failure 400 {object} problemdetails.ProblemDetails
+// @Failure 404 {object} problemdetails.ProblemDetails
+// @Failure 500 {object} problemdetails.ProblemDetails
 // @Router /api/v1/taxcode:calculate-person-data [post]
 func (h *Handler) CalculatePersonData(c *fiber.Ctx) error {
 
 	req := new(service.CalculatePersonDataRequest)
 
 	if err := c.BodyParser(req); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+		return err
 	}
 
 	data, _ := h.service.CalculatePersonData(c.Context(), req)
 	return c.JSON(data)
+}
+
+// HandleError handles all the error wrapping them into a proper problem detail object
+func (h *Handler) HandleError(c *fiber.Ctx, err error) error {
+	code := fiber.StatusInternalServerError
+	message := err.Error()
+
+	if e, ok := err.(*fiber.Error); ok {
+		code = e.Code
+		message = e.Message
+	}
+
+	problemDetails := problemdetails.New(code, "", "", message, c.Path())
+	return c.Status(code).JSON(problemDetails)
 }
