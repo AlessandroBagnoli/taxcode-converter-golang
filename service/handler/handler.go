@@ -15,7 +15,7 @@ func NewHandler(service service.TaxCodeService) *Handler {
 
 // CalculateTaxCode godoc
 // @Summary Calculate tax code starting from the data of a person.
-// @Accept */*
+// @Accept json
 // @Produce json
 // @Param CalculateTaxCodeRequest body service.CalculateTaxCodeRequest true "CalculateTaxCodeRequest"
 // @Success 200 {object} service.CalculateTaxCodeResponse
@@ -36,7 +36,7 @@ func (h *Handler) CalculateTaxCode(c *fiber.Ctx) error {
 
 // CalculatePersonData godoc
 // @Summary Calculate data of a person starting from his tax code.
-// @Accept */*
+// @Accept json
 // @Produce json
 // @Param CalculatePersonDataRequest body service.CalculatePersonDataRequest true "CalculatePersonDataRequest"
 // @Success 200 {object} service.CalculatePersonDataResponse

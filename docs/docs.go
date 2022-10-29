@@ -19,7 +19,7 @@ const docTemplate = `{
         "/api/v1/taxcode:calculate-person-data": {
             "post": {
                 "consumes": [
-                    "*/*"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
@@ -49,7 +49,7 @@ const docTemplate = `{
         "/api/v1/taxcode:calculate-tax-code": {
             "post": {
                 "consumes": [
-                    "*/*"
+                    "application/json"
                 ],
                 "produces": [
                     "application/json"
