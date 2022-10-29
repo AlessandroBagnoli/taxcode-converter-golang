@@ -7,11 +7,12 @@ import (
 )
 
 type Handler struct {
-	service service.TaxCodeService
+	service   service.TaxCodeService
+	validator service.Validator
 }
 
-func NewHandler(service service.TaxCodeService) *Handler {
-	return &Handler{service}
+func NewHandler(service service.TaxCodeService, validator service.Validator) *Handler {
+	return &Handler{service, validator}
 }
 
 // CalculateTaxCode godoc
@@ -24,7 +25,7 @@ func NewHandler(service service.TaxCodeService) *Handler {
 // @Failure 404 {object} problemdetails.ProblemDetails
 // @Failure 500 {object} problemdetails.ProblemDetails
 // @Router /api/v1/taxcode:calculate-tax-code [post]
-func (h *Handler) CalculateTaxCode(c *fiber.Ctx) error {
+func (h Handler) CalculateTaxCode(c *fiber.Ctx) error {
 
 	req := new(service.CalculateTaxCodeRequest)
 
@@ -32,7 +33,12 @@ func (h *Handler) CalculateTaxCode(c *fiber.Ctx) error {
 		return err
 	}
 
-	data, _ := h.service.CalculateTaxCode(c.Context(), req)
+	err := h.validator.ValidateCalculateTaxCodeReq(*req)
+	if err != nil {
+		return err
+	}
+
+	data, _ := h.service.CalculateTaxCode(c.Context(), *req)
 	return c.JSON(data)
 }
 
@@ -46,7 +52,7 @@ func (h *Handler) CalculateTaxCode(c *fiber.Ctx) error {
 // @Failure 404 {object} problemdetails.ProblemDetails
 // @Failure 500 {object} problemdetails.ProblemDetails
 // @Router /api/v1/taxcode:calculate-person-data [post]
-func (h *Handler) CalculatePersonData(c *fiber.Ctx) error {
+func (h Handler) CalculatePersonData(c *fiber.Ctx) error {
 
 	req := new(service.CalculatePersonDataRequest)
 
@@ -54,12 +60,17 @@ func (h *Handler) CalculatePersonData(c *fiber.Ctx) error {
 		return err
 	}
 
-	data, _ := h.service.CalculatePersonData(c.Context(), req)
+	err := h.validator.ValidateCalculatePersonDataReq(*req)
+	if err != nil {
+		return err
+	}
+
+	data, _ := h.service.CalculatePersonData(c.Context(), *req)
 	return c.JSON(data)
 }
 
 // HandleError handles all the error wrapping them into a proper problem detail object
-func (h *Handler) HandleError(c *fiber.Ctx, err error) error {
+func (h Handler) HandleError(c *fiber.Ctx, err error) error {
 	code := fiber.StatusInternalServerError
 	message := err.Error()
 

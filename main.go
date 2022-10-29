@@ -1,12 +1,14 @@
 package main
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	swaggerfiber "github.com/gofiber/swagger"
 	log "github.com/sirupsen/logrus"
 	_ "taxcode-converter/docs"
 	"taxcode-converter/service/handler"
 	"taxcode-converter/service/taxcode"
+	validatorservice "taxcode-converter/service/validator"
 )
 
 // @title taxcode-converter
@@ -18,7 +20,8 @@ import (
 func main() {
 
 	taxCodeService := taxcode.NewTaxCodeService()
-	h := handler.NewHandler(taxCodeService)
+	v := validatorservice.NewValidator(*validator.New())
+	h := handler.NewHandler(taxCodeService, v)
 
 	app := fiber.New(fiber.Config{ErrorHandler: h.HandleError})
 	swagger := app.Group("/swagger")
