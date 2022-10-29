@@ -1,4 +1,4 @@
-module go-poc
+module taxcode-converter
 
 go 1.19
 

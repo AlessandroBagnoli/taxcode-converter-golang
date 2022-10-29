@@ -2,7 +2,7 @@ package taxcode
 
 import (
 	"context"
-	"go-poc/service"
+	"taxcode-converter/service"
 	"time"
 )
 

@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
-	"go-poc/service/handler"
-	"go-poc/service/taxcode"
+	"taxcode-converter/service/handler"
+	"taxcode-converter/service/taxcode"
 )
 
 func main() {
