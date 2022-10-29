@@ -155,7 +155,6 @@
                 "gender": {
                     "type": "string",
                     "enum": [
-                        "UNKNOWN",
                         "MALE",
                         "FEMALE"
                     ]
@@ -195,7 +194,6 @@
                 "gender": {
                     "type": "string",
                     "enum": [
-                        "UNKNOWN",
                         "MALE",
                         "FEMALE"
                     ]

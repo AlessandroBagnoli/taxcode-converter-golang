@@ -53,7 +53,6 @@ definitions:
         type: string
       gender:
         enum:
-        - UNKNOWN
         - MALE
         - FEMALE
         type: string
@@ -75,7 +74,6 @@ definitions:
         type: string
       gender:
         enum:
-        - UNKNOWN
         - MALE
         - FEMALE
         type: string

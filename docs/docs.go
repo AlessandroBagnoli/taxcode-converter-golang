@@ -163,7 +163,6 @@ const docTemplate = `{
                 "gender": {
                     "type": "string",
                     "enum": [
-                        "UNKNOWN",
                         "MALE",
                         "FEMALE"
                     ]
@@ -203,7 +202,6 @@ const docTemplate = `{
                 "gender": {
                     "type": "string",
                     "enum": [
-                        "UNKNOWN",
                         "MALE",
                         "FEMALE"
                     ]
