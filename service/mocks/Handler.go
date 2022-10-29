@@ -40,6 +40,20 @@ func (_m *Handler) CalculateTaxCode(c *fiber.Ctx) error {
 	return r0
 }
 
+// HandleError provides a mock function with given fields: c, err
+func (_m *Handler) HandleError(c *fiber.Ctx, err error) error {
+	ret := _m.Called(c, err)
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*fiber.Ctx, error) error); ok {
+		r0 = rf(c, err)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 type mockConstructorTestingTNewHandler interface {
 	mock.TestingT
 	Cleanup(func())
