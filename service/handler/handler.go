@@ -75,7 +75,7 @@ func (h Handler) CalculatePersonData(c *fiber.Ctx) error {
 	return c.JSON(data)
 }
 
-// HandleError handles all the error wrapping them into a proper problem detail object
+// HandleError handles all the error wrapping them into a proper problemdetails.ProblemDetails object
 func (h Handler) HandleError(c *fiber.Ctx, err error) error {
 	code := fiber.StatusInternalServerError
 	message := err.Error()
