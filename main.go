@@ -3,16 +3,17 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
+	"go-poc/service/handler"
+	"go-poc/service/taxcode"
 )
 
 func main() {
 
+	taxCodeService := taxcode.NewTaxCodeService()
+	h := handler.NewHandler(taxCodeService)
+
 	app := fiber.New()
-	app.Get("/", func(c *fiber.Ctx) error {
-		return c.JSON(&Dto{
-			Data:      "Hello world!",
-			NestedDto: &NestedDto{NestedData: 56}})
-	})
+	app.Post("/api/v1/taxcode:calculate-person-data", h.CalculatePersonData)
 
 	log.Fatal(app.Listen(":8080"))
 }
