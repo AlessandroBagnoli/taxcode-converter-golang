@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/go-playground/validator/v10"
+	"github.com/go-playground/validator/v10/non-standard/validators"
 	"github.com/gofiber/fiber/v2"
 	swaggerfiber "github.com/gofiber/swagger"
 	log "github.com/sirupsen/logrus"
@@ -21,7 +22,12 @@ func main() {
 
 	// dependencies injection
 	taxCodeService := taxcode.NewTaxCodeService()
-	v := validatorservice.NewValidator(*validator.New())
+	validate := validator.New()
+	err := validate.RegisterValidation("notblank", validators.NotBlank)
+	if err != nil {
+		log.Fatal(err)
+	}
+	v := validatorservice.NewValidator(*validate)
 	h := handler.NewHandler(taxCodeService, v)
 
 	// creation of fiber app with custom config for error handling
