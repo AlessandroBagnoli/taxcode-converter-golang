@@ -4,6 +4,6 @@ package service
 import "context"
 
 type TaxCodeService interface {
-	CalculateTaxCode(ctx context.Context)
+	CalculateTaxCode(ctx context.Context, req *CalculateTaxCodeRequest) (*CalculateTaxCodeResponse, error)
 	CalculatePersonData(ctx context.Context, req *CalculatePersonDataRequest) (*CalculatePersonDataResponse, error)
 }

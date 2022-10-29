@@ -14,6 +14,7 @@ func main() {
 
 	app := fiber.New()
 	app.Post("/api/v1/taxcode:calculate-person-data", h.CalculatePersonData)
+	app.Post("/api/v1/taxcode:calculate-tax-code", h.CalculateTaxCode)
 
 	log.Fatal(app.Listen(":8080"))
 }

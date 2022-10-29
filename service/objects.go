@@ -1,12 +1,10 @@
 package service
 
-import "time"
-
 type CalculateTaxCodeRequest struct {
 	Gender      Gender    `json:"gender"`
 	Name        string    `json:"name"`
 	Surname     string    `json:"surname"`
-	DateOfBirth time.Time `json:"dateOfBirth"`
+	DateOfBirth CivilTime `json:"dateOfBirth"`
 	BirthPlace  string    `json:"birthPlace"`
 	Province    string    `json:"province"`
 }
@@ -23,7 +21,7 @@ type CalculatePersonDataResponse struct {
 	Gender      Gender    `json:"gender"`
 	Name        string    `json:"name"`
 	Surname     string    `json:"surname"`
-	DateOfBirth time.Time `json:"dateOfBirth"`
+	DateOfBirth CivilTime `json:"dateOfBirth"`
 	BirthPlace  string    `json:"birthPlace"`
 	Province    string    `json:"province"`
 	TaxCode     string    `json:"taxCode"`
