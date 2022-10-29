@@ -30,15 +30,18 @@ func (h Handler) CalculateTaxCode(c *fiber.Ctx) error {
 	req := new(service.CalculateTaxCodeRequest)
 
 	if err := c.BodyParser(req); err != nil {
-		return err
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	err := h.validator.ValidateCalculateTaxCodeReq(*req)
+	if err := h.validator.ValidateCalculateTaxCodeReq(*req); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	data, err := h.service.CalculateTaxCode(c.Context(), *req)
 	if err != nil {
 		return err
 	}
 
-	data, _ := h.service.CalculateTaxCode(c.Context(), *req)
 	return c.JSON(data)
 }
 
@@ -57,15 +60,18 @@ func (h Handler) CalculatePersonData(c *fiber.Ctx) error {
 	req := new(service.CalculatePersonDataRequest)
 
 	if err := c.BodyParser(req); err != nil {
-		return err
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	err := h.validator.ValidateCalculatePersonDataReq(*req)
+	if err := h.validator.ValidateCalculatePersonDataReq(*req); err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	data, err := h.service.CalculatePersonData(c.Context(), *req)
 	if err != nil {
 		return err
 	}
 
-	data, _ := h.service.CalculatePersonData(c.Context(), *req)
 	return c.JSON(data)
 }
 
