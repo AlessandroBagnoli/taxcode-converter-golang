@@ -13,6 +13,8 @@ import (
 // @version 1.0
 // @host localhost:8080
 // @BasePath /
+//
+//go:generate swag init
 func main() {
 
 	taxCodeService := taxcode.NewTaxCodeService()
