@@ -19,17 +19,22 @@ import (
 //go:generate swag init --pd
 func main() {
 
+	// dependencies injection
 	taxCodeService := taxcode.NewTaxCodeService()
 	v := validatorservice.NewValidator(*validator.New())
 	h := handler.NewHandler(taxCodeService, v)
 
+	// creation of fiber app with custom config for error handling
 	app := fiber.New(fiber.Config{ErrorHandler: h.HandleError})
-	swagger := app.Group("/swagger")
-	swagger.Get("/*", swaggerfiber.HandlerDefault)
 
+	// routing for swagger documentation
+	app.Get("/swagger/*", swaggerfiber.HandlerDefault)
+
+	// routing for apis
 	v1 := app.Group("/api/v1")
 	v1.Post("/taxcode:calculate-tax-code", h.CalculateTaxCode)
 	v1.Post("/taxcode:calculate-person-data", h.CalculatePersonData)
 
+	// server listening
 	log.Fatal(app.Listen(":8080"))
 }

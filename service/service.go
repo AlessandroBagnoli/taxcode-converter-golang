@@ -13,8 +13,8 @@ type Handler interface {
 }
 
 type TaxCodeService interface {
-	CalculateTaxCode(c context.Context, req CalculateTaxCodeRequest) (*CalculateTaxCodeResponse, error)
-	CalculatePersonData(c context.Context, req CalculatePersonDataRequest) (*CalculatePersonDataResponse, error)
+	CalculateTaxCode(c context.Context, req CalculateTaxCodeRequest) (CalculateTaxCodeResponse, error)
+	CalculatePersonData(c context.Context, req CalculatePersonDataRequest) (CalculatePersonDataResponse, error)
 }
 
 type Validator interface {
