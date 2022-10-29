@@ -1,10 +1,10 @@
 package service
 
 type CalculateTaxCodeRequest struct {
-	Gender      Gender    `json:"gender"`
+	Gender      Gender    `json:"gender" enums:"UNKNOWN,MALE,FEMALE"`
 	Name        string    `json:"name"`
 	Surname     string    `json:"surname"`
-	DateOfBirth CivilTime `json:"dateOfBirth"`
+	DateOfBirth CivilTime `json:"dateOfBirth" format:"date"`
 	BirthPlace  string    `json:"birthPlace"`
 	Province    string    `json:"province"`
 }
@@ -18,10 +18,10 @@ type CalculatePersonDataRequest struct {
 }
 
 type CalculatePersonDataResponse struct {
-	Gender      Gender    `json:"gender"`
+	Gender      Gender    `json:"gender" enums:"UNKNOWN,MALE,FEMALE"`
 	Name        string    `json:"name"`
 	Surname     string    `json:"surname"`
-	DateOfBirth CivilTime `json:"dateOfBirth"`
+	DateOfBirth CivilTime `json:"dateOfBirth" format:"date"`
 	BirthPlace  string    `json:"birthPlace"`
 	Province    string    `json:"province"`
 	TaxCode     string    `json:"taxCode"`
@@ -31,6 +31,6 @@ type Gender string
 
 const (
 	GenderUnknown Gender = "UNKNOWN"
-	GenderMale           = "M"
-	GenderFemale         = "F"
+	GenderMale           = "MALE"
+	GenderFemale         = "FEMALE"
 )

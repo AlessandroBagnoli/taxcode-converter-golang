@@ -1,0 +1,99 @@
+basePath: /
+definitions:
+  service.CalculatePersonDataRequest:
+    properties:
+      taxCode:
+        type: string
+    type: object
+  service.CalculatePersonDataResponse:
+    properties:
+      birthPlace:
+        type: string
+      dateOfBirth:
+        format: date
+        type: string
+      gender:
+        enum:
+        - UNKNOWN
+        - MALE
+        - FEMALE
+        type: string
+      name:
+        type: string
+      province:
+        type: string
+      surname:
+        type: string
+      taxCode:
+        type: string
+    type: object
+  service.CalculateTaxCodeRequest:
+    properties:
+      birthPlace:
+        type: string
+      dateOfBirth:
+        format: date
+        type: string
+      gender:
+        enum:
+        - UNKNOWN
+        - MALE
+        - FEMALE
+        type: string
+      name:
+        type: string
+      province:
+        type: string
+      surname:
+        type: string
+    type: object
+  service.CalculateTaxCodeResponse:
+    properties:
+      taxCode:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  title: taxcode-converter
+  version: "1.0"
+paths:
+  /api/v1/taxcode:calculate-person-data:
+    post:
+      consumes:
+      - '*/*'
+      parameters:
+      - description: CalculatePersonDataRequest
+        in: body
+        name: CalculatePersonDataRequest
+        required: true
+        schema:
+          $ref: '#/definitions/service.CalculatePersonDataRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.CalculatePersonDataResponse'
+      summary: Calculate data of a person starting from his tax code.
+  /api/v1/taxcode:calculate-tax-code:
+    post:
+      consumes:
+      - '*/*'
+      parameters:
+      - description: CalculateTaxCodeRequest
+        in: body
+        name: CalculateTaxCodeRequest
+        required: true
+        schema:
+          $ref: '#/definitions/service.CalculateTaxCodeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.CalculateTaxCodeResponse'
+      summary: Calculate tax code starting from the data of a person.
+swagger: "2.0"
