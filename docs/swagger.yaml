@@ -41,6 +41,8 @@ definitions:
     properties:
       taxCode:
         type: string
+    required:
+    - taxCode
     type: object
   service.CalculatePersonDataResponse:
     properties:
@@ -83,6 +85,13 @@ definitions:
         type: string
       surname:
         type: string
+    required:
+    - birthPlace
+    - dateOfBirth
+    - gender
+    - name
+    - province
+    - surname
     type: object
   service.CalculateTaxCodeResponse:
     properties:

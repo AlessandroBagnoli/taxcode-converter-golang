@@ -133,6 +133,9 @@
         },
         "service.CalculatePersonDataRequest": {
             "type": "object",
+            "required": [
+                "taxCode"
+            ],
             "properties": {
                 "taxCode": {
                     "type": "string"
@@ -173,6 +176,14 @@
         },
         "service.CalculateTaxCodeRequest": {
             "type": "object",
+            "required": [
+                "birthPlace",
+                "dateOfBirth",
+                "gender",
+                "name",
+                "province",
+                "surname"
+            ],
             "properties": {
                 "birthPlace": {
                     "type": "string"

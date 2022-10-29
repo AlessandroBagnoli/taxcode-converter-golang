@@ -141,6 +141,9 @@ const docTemplate = `{
         },
         "service.CalculatePersonDataRequest": {
             "type": "object",
+            "required": [
+                "taxCode"
+            ],
             "properties": {
                 "taxCode": {
                     "type": "string"
@@ -181,6 +184,14 @@ const docTemplate = `{
         },
         "service.CalculateTaxCodeRequest": {
             "type": "object",
+            "required": [
+                "birthPlace",
+                "dateOfBirth",
+                "gender",
+                "name",
+                "province",
+                "surname"
+            ],
             "properties": {
                 "birthPlace": {
                     "type": "string"

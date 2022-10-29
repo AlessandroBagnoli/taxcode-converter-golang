@@ -22,12 +22,8 @@ func main() {
 
 	// dependencies injection
 	taxCodeService := taxcode.NewTaxCodeService()
-	validate := validator.New()
-	err := validate.RegisterValidation("notblank", validators.NotBlank)
-	if err != nil {
-		log.Fatal(err)
-	}
-	v := validatorservice.NewValidator(*validate)
+	validate := configureValidator()
+	v := validatorservice.NewValidator(validate)
 	h := handler.NewHandler(taxCodeService, v)
 
 	// creation of fiber app with custom config for error handling
@@ -43,4 +39,13 @@ func main() {
 
 	// server listening
 	log.Fatal(app.Listen(":8080"))
+}
+
+func configureValidator() validator.Validate {
+	validate := validator.New()
+	err := validate.RegisterValidation("notblank", validators.NotBlank)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return *validate
 }

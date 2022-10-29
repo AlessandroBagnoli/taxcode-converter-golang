@@ -1,12 +1,12 @@
 package service
 
 type CalculateTaxCodeRequest struct {
-	Gender      Gender    `json:"gender" enums:"UNKNOWN,MALE,FEMALE" validate:"notblank,oneof=MALE FEMALE"`
-	Name        string    `json:"name" validate:"notblank"`
-	Surname     string    `json:"surname" validate:"notblank"`
+	Gender      Gender    `json:"gender" enums:"UNKNOWN,MALE,FEMALE" validate:"required,notblank,oneof=MALE FEMALE"`
+	Name        string    `json:"name" validate:"required,notblank"`
+	Surname     string    `json:"surname" validate:"required,notblank"`
 	DateOfBirth CivilTime `json:"dateOfBirth" format:"date" validate:"required"`
-	BirthPlace  string    `json:"birthPlace" validate:"notblank"`
-	Province    string    `json:"province" validate:"notblank"`
+	BirthPlace  string    `json:"birthPlace" validate:"required,notblank"`
+	Province    string    `json:"province" validate:"required,notblank"`
 }
 
 type CalculateTaxCodeResponse struct {
@@ -14,7 +14,7 @@ type CalculateTaxCodeResponse struct {
 }
 
 type CalculatePersonDataRequest struct {
-	TaxCode string `json:"taxCode" validate:"notblank"`
+	TaxCode string `json:"taxCode" validate:"required,notblank"`
 }
 
 type CalculatePersonDataResponse struct {
