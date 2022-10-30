@@ -60,9 +60,9 @@ func createFiberApp(h handler.Handler) *fiber.App {
 
 func configureFiberLogger() fiber.Handler {
 	return logger.New(logger.Config{
-		// this is because I don't want to log traffic to swagger documentation
+		// this is because I just want to log incoming request to the exposed api and ignore everything else
 		Next: func(c *fiber.Ctx) bool {
-			return strings.Contains(c.Path(), "/swagger/")
+			return !strings.Contains(c.Path(), "/api/v1/")
 		},
 		Format: "[${time}]|${status}|${resBody}|${latency} - ${method}|${path}|${body}\n",
 	})
