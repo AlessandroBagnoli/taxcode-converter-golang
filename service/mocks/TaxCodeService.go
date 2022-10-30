@@ -3,7 +3,6 @@
 package mocks
 
 import (
-	context "context"
 	service "taxcode-converter/service"
 
 	mock "github.com/stretchr/testify/mock"
@@ -14,20 +13,20 @@ type TaxCodeService struct {
 	mock.Mock
 }
 
-// CalculatePersonData provides a mock function with given fields: c, req
-func (_m *TaxCodeService) CalculatePersonData(c context.Context, req service.CalculatePersonDataRequest) (service.CalculatePersonDataResponse, error) {
-	ret := _m.Called(c, req)
+// CalculatePersonData provides a mock function with given fields: req
+func (_m *TaxCodeService) CalculatePersonData(req service.CalculatePersonDataRequest) (service.CalculatePersonDataResponse, error) {
+	ret := _m.Called(req)
 
 	var r0 service.CalculatePersonDataResponse
-	if rf, ok := ret.Get(0).(func(context.Context, service.CalculatePersonDataRequest) service.CalculatePersonDataResponse); ok {
-		r0 = rf(c, req)
+	if rf, ok := ret.Get(0).(func(service.CalculatePersonDataRequest) service.CalculatePersonDataResponse); ok {
+		r0 = rf(req)
 	} else {
 		r0 = ret.Get(0).(service.CalculatePersonDataResponse)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, service.CalculatePersonDataRequest) error); ok {
-		r1 = rf(c, req)
+	if rf, ok := ret.Get(1).(func(service.CalculatePersonDataRequest) error); ok {
+		r1 = rf(req)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -35,20 +34,20 @@ func (_m *TaxCodeService) CalculatePersonData(c context.Context, req service.Cal
 	return r0, r1
 }
 
-// CalculateTaxCode provides a mock function with given fields: c, req
-func (_m *TaxCodeService) CalculateTaxCode(c context.Context, req service.CalculateTaxCodeRequest) (service.CalculateTaxCodeResponse, error) {
-	ret := _m.Called(c, req)
+// CalculateTaxCode provides a mock function with given fields: req
+func (_m *TaxCodeService) CalculateTaxCode(req service.CalculateTaxCodeRequest) (service.CalculateTaxCodeResponse, error) {
+	ret := _m.Called(req)
 
 	var r0 service.CalculateTaxCodeResponse
-	if rf, ok := ret.Get(0).(func(context.Context, service.CalculateTaxCodeRequest) service.CalculateTaxCodeResponse); ok {
-		r0 = rf(c, req)
+	if rf, ok := ret.Get(0).(func(service.CalculateTaxCodeRequest) service.CalculateTaxCodeResponse); ok {
+		r0 = rf(req)
 	} else {
 		r0 = ret.Get(0).(service.CalculateTaxCodeResponse)
 	}
 
 	var r1 error
-	if rf, ok := ret.Get(1).(func(context.Context, service.CalculateTaxCodeRequest) error); ok {
-		r1 = rf(c, req)
+	if rf, ok := ret.Get(1).(func(service.CalculateTaxCodeRequest) error); ok {
+		r1 = rf(req)
 	} else {
 		r1 = ret.Error(1)
 	}

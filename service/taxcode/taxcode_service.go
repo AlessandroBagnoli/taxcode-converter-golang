@@ -2,7 +2,6 @@ package taxcode
 
 import (
 	"cloud.google.com/go/civil"
-	"context"
 	"taxcode-converter/service"
 )
 
@@ -13,12 +12,12 @@ func NewTaxCodeService() *Service {
 	return &Service{}
 }
 
-func (s Service) CalculateTaxCode(c context.Context, req service.CalculateTaxCodeRequest) (service.CalculateTaxCodeResponse, error) {
+func (s Service) CalculateTaxCode(req service.CalculateTaxCodeRequest) (service.CalculateTaxCodeResponse, error) {
 	dummyResponse := service.CalculateTaxCodeResponse{TaxCode: "BGNLSN93P19H294L"}
 	return dummyResponse, nil
 }
 
-func (s Service) CalculatePersonData(c context.Context, req service.CalculatePersonDataRequest) (service.CalculatePersonDataResponse, error) {
+func (s Service) CalculatePersonData(req service.CalculatePersonDataRequest) (service.CalculatePersonDataResponse, error) {
 	dummyResponse := service.CalculatePersonDataResponse{
 		Gender:  service.GenderMale,
 		Name:    "Alessandro",

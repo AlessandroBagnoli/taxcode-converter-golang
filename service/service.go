@@ -2,7 +2,6 @@ package service
 
 //go:generate mockery --all --output $PWD/mocks
 import (
-	"context"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -13,8 +12,8 @@ type Handler interface {
 }
 
 type TaxCodeService interface {
-	CalculateTaxCode(c context.Context, req CalculateTaxCodeRequest) (CalculateTaxCodeResponse, error)
-	CalculatePersonData(c context.Context, req CalculatePersonDataRequest) (CalculatePersonDataResponse, error)
+	CalculateTaxCode(req CalculateTaxCodeRequest) (CalculateTaxCodeResponse, error)
+	CalculatePersonData(req CalculatePersonDataRequest) (CalculatePersonDataResponse, error)
 }
 
 type Validator interface {

@@ -24,12 +24,25 @@ import (
 //go:generate swag init --pd
 func main() {
 
-	// dependencies injection
+	h := initDependencies()
+
+	app := createFiberApp(h)
+
+	// server listening
+	log.Fatal(app.Listen(":8080"))
+}
+
+// initDependencies creates and injects dependencies, returns the handler for incoming http requests
+func initDependencies() handler.Handler {
 	taxCodeService := taxcode.NewTaxCodeService()
 	validate := configureValidator()
 	v := validatorservice.NewValidator(validate)
 	h := handler.NewHandler(taxCodeService, v)
+	return *h
+}
 
+// createFiberApp creates and configure the fiber server
+func createFiberApp(h handler.Handler) *fiber.App {
 	// creation of fiber app with custom config for error handling, usage of logger and cors
 	app := fiber.New(fiber.Config{ErrorHandler: h.HandleError})
 	app.Use(configureFiberLogger())
@@ -42,9 +55,7 @@ func main() {
 	v1 := app.Group("/api/v1")
 	v1.Post("/taxcode:calculate-tax-code", h.CalculateTaxCode)
 	v1.Post("/taxcode:calculate-person-data", h.CalculatePersonData)
-
-	// server listening
-	log.Fatal(app.Listen(":8080"))
+	return app
 }
 
 func configureFiberLogger() fiber.Handler {

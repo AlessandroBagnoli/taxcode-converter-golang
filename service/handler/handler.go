@@ -37,7 +37,7 @@ func (h Handler) CalculateTaxCode(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	data, err := h.service.CalculateTaxCode(c.Context(), *req)
+	data, err := h.service.CalculateTaxCode(*req)
 	if err != nil {
 		return err
 	}
@@ -67,7 +67,7 @@ func (h Handler) CalculatePersonData(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	data, err := h.service.CalculatePersonData(c.Context(), *req)
+	data, err := h.service.CalculatePersonData(*req)
 	if err != nil {
 		return err
 	}
