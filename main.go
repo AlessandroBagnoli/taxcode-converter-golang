@@ -5,8 +5,11 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/go-playground/validator/v10/non-standard/validators"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	swaggerfiber "github.com/gofiber/swagger"
 	log "github.com/sirupsen/logrus"
+	"strings"
 	_ "taxcode-converter/docs"
 	"taxcode-converter/service/handler"
 	"taxcode-converter/service/taxcode"
@@ -27,8 +30,10 @@ func main() {
 	v := validatorservice.NewValidator(validate)
 	h := handler.NewHandler(taxCodeService, v)
 
-	// creation of fiber app with custom config for error handling
+	// creation of fiber app with custom config for error handling, usage of logger and cors
 	app := fiber.New(fiber.Config{ErrorHandler: h.HandleError})
+	app.Use(configureFiberLogger())
+	app.Use(cors.New())
 
 	// routing for swagger documentation
 	app.Get("/swagger/*", swaggerfiber.HandlerDefault)
@@ -40,6 +45,15 @@ func main() {
 
 	// server listening
 	log.Fatal(app.Listen(":8080"))
+}
+
+func configureFiberLogger() fiber.Handler {
+	return logger.New(logger.Config{
+		Next: func(c *fiber.Ctx) bool {
+			return strings.Contains(c.Path(), "/swagger/")
+		},
+		Format: "[${time}]|${status}|${resBody}|${latency} - ${method}|${path}|${body}\n",
+	})
 }
 
 func configureValidator() validator.Validate {
