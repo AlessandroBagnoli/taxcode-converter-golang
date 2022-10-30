@@ -44,13 +44,11 @@ func main() {
 
 func configureValidator() validator.Validate {
 	validate := validator.New()
-	err := validate.RegisterValidation("notblank", validators.NotBlank)
-	if err != nil {
+	if err := validate.RegisterValidation("notblank", validators.NotBlank); err != nil {
 		log.Fatal(err)
 	}
 	validate.RegisterCustomTypeFunc(validatorservice.TimeValue, civil.Date{}, civil.DateTime{}, civil.Time{})
-	err = validate.RegisterValidation("inthepast", validatorservice.DateInThePast)
-	if err != nil {
+	if err := validate.RegisterValidation("inthepast", validatorservice.DateInThePast); err != nil {
 		log.Fatal(err)
 	}
 	return *validate
