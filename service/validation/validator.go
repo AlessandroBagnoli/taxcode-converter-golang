@@ -38,7 +38,7 @@ func DateInThePast(fl validator.FieldLevel) bool {
 	}
 }
 
-func IsValidTaxCode(fl validator.FieldLevel) bool {
+func ValidTaxCode(fl validator.FieldLevel) bool {
 	field := fl.Field()
 
 	switch field.Kind() {
