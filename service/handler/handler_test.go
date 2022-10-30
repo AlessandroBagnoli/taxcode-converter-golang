@@ -21,6 +21,7 @@ import (
 	"testing"
 )
 
+// TODO all these setup methods are just copied from main.go. Find a place where to put them in order to reuse them also in test without copying everytime
 func setup() Handler {
 	taxCodeService := taxcode.NewTaxCodeService()
 	validate := configureValidator()
