@@ -1,12 +1,16 @@
 package service
 
+import (
+	"cloud.google.com/go/civil"
+)
+
 type CalculateTaxCodeRequest struct {
-	Gender      Gender    `json:"gender" enums:"MALE,FEMALE" validate:"required,notblank,oneof=MALE FEMALE"`
-	Name        string    `json:"name" validate:"required,notblank"`
-	Surname     string    `json:"surname" validate:"required,notblank"`
-	DateOfBirth CivilTime `json:"dateOfBirth" format:"date" validate:"required"`
-	BirthPlace  string    `json:"birthPlace" validate:"required,notblank"`
-	Province    string    `json:"province" validate:"required,notblank"`
+	Gender      Gender     `json:"gender" validate:"required,notblank,oneof=MALE FEMALE" enums:"MALE,FEMALE"`
+	Name        string     `json:"name" validate:"required,notblank"`
+	Surname     string     `json:"surname" validate:"required,notblank"`
+	DateOfBirth civil.Date `json:"dateOfBirth" validate:"required,inthepast" format:"date" swaggertype:"string"`
+	BirthPlace  string     `json:"birthPlace" validate:"required,notblank"`
+	Province    string     `json:"province" validate:"required,notblank"`
 }
 
 type CalculateTaxCodeResponse struct {
@@ -18,13 +22,13 @@ type CalculatePersonDataRequest struct {
 }
 
 type CalculatePersonDataResponse struct {
-	Gender      Gender    `json:"gender" enums:"MALE,FEMALE"`
-	Name        string    `json:"name"`
-	Surname     string    `json:"surname"`
-	DateOfBirth CivilTime `json:"dateOfBirth" format:"date"`
-	BirthPlace  string    `json:"birthPlace"`
-	Province    string    `json:"province"`
-	TaxCode     string    `json:"taxCode"`
+	Gender      Gender     `json:"gender" enums:"MALE,FEMALE"`
+	Name        string     `json:"name"`
+	Surname     string     `json:"surname"`
+	DateOfBirth civil.Date `json:"dateOfBirth" format:"date" swaggertype:"string"`
+	BirthPlace  string     `json:"birthPlace"`
+	Province    string     `json:"province"`
+	TaxCode     string     `json:"taxCode"`
 }
 
 type Gender string

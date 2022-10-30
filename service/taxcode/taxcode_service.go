@@ -1,9 +1,9 @@
 package taxcode
 
 import (
+	"cloud.google.com/go/civil"
 	"context"
 	"taxcode-converter/service"
-	"time"
 )
 
 type Service struct {
@@ -20,13 +20,17 @@ func (s Service) CalculateTaxCode(c context.Context, req service.CalculateTaxCod
 
 func (s Service) CalculatePersonData(c context.Context, req service.CalculatePersonDataRequest) (service.CalculatePersonDataResponse, error) {
 	dummyResponse := service.CalculatePersonDataResponse{
-		Gender:      service.GenderMale,
-		Name:        "Alessandro",
-		Surname:     "Bagnoli",
-		DateOfBirth: service.CivilTime(time.Date(1993, 9, 19, 0, 0, 0, 0, time.UTC)),
-		BirthPlace:  "Rimini",
-		Province:    "RN",
-		TaxCode:     "BGNLSN93P19H294L",
+		Gender:  service.GenderMale,
+		Name:    "Alessandro",
+		Surname: "Bagnoli",
+		DateOfBirth: civil.Date{
+			Year:  1993,
+			Month: 9,
+			Day:   19,
+		},
+		BirthPlace: "Rimini",
+		Province:   "RN",
+		TaxCode:    "BGNLSN93P19H294L",
 	}
 	return dummyResponse, nil
 }

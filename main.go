@@ -1,6 +1,7 @@
 package main
 
 import (
+	"cloud.google.com/go/civil"
 	"github.com/go-playground/validator/v10"
 	"github.com/go-playground/validator/v10/non-standard/validators"
 	"github.com/gofiber/fiber/v2"
@@ -9,7 +10,7 @@ import (
 	_ "taxcode-converter/docs"
 	"taxcode-converter/service/handler"
 	"taxcode-converter/service/taxcode"
-	validatorservice "taxcode-converter/service/validator"
+	validatorservice "taxcode-converter/service/validation"
 )
 
 // @title taxcode-converter
@@ -44,6 +45,11 @@ func main() {
 func configureValidator() validator.Validate {
 	validate := validator.New()
 	err := validate.RegisterValidation("notblank", validators.NotBlank)
+	if err != nil {
+		log.Fatal(err)
+	}
+	validate.RegisterCustomTypeFunc(validatorservice.TimeValue, civil.Date{}, civil.DateTime{}, civil.Time{})
+	err = validate.RegisterValidation("inthepast", validatorservice.DateInThePast)
 	if err != nil {
 		log.Fatal(err)
 	}
