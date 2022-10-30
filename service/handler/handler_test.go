@@ -1,71 +1,54 @@
+//go:build functional
+
 package handler
 
 import (
 	"bytes"
-	"cloud.google.com/go/civil"
-	"encoding/json"
 	"github.com/gofiber/fiber/v2"
-	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http/httptest"
-	"taxcode-converter/service"
 	"testing"
 )
 
 func TestHandler_CalculateTaxCode(t *testing.T) {
+	h := InitDependencies()
+	app := CreateFiberApp(h)
+
 	tests := []struct {
 		description  string
 		route        string
-		body         service.CalculateTaxCodeRequest
+		body         string
 		expectedCode int
-		expectedBody service.CalculateTaxCodeResponse
+		expectedBody string
 	}{
 		{
-			description: "should return 200 with body as expected",
-			route:       "/api/v1/taxcode:calculate-tax-code",
-			body: service.CalculateTaxCodeRequest{
-				Gender:  "MALE",
-				Name:    "Alessandro",
-				Surname: "Bagnoli",
-				DateOfBirth: civil.Date{
-					Year:  1993,
-					Month: 9,
-					Day:   19,
-				},
-				BirthPlace: "Rimini",
-				Province:   "RN",
-			},
+			description:  "should return 200 with calculated taxcode when request is valid",
+			route:        "/api/v1/taxcode:calculate-tax-code",
+			body:         `{"gender":"MALE","name":"Alessandro","surname":"Bagnoli","dateOfBirth":"1993-09-19","birthPlace":"Rimini","province":"RN"}`,
 			expectedCode: 200,
-			expectedBody: service.CalculateTaxCodeResponse{TaxCode: "BGNLSN93P19H294L"},
+			expectedBody: `{"taxCode":"BGNLSN93P19H294L"}`,
 		},
 		{
-			description: "should return 200 with body as expected",
-			route:       "/api/v1/taxcode:calculate-tax-code",
-			body: service.CalculateTaxCodeRequest{
-				Gender:  "MALE",
-				Name:    "Alessandro",
-				Surname: "Bagnoli",
-				DateOfBirth: civil.Date{
-					Year:  1993,
-					Month: 9,
-					Day:   19,
-				},
-				BirthPlace: "Rimini",
-				Province:   "RN",
-			},
-			expectedCode: 200,
-			expectedBody: service.CalculateTaxCodeResponse{TaxCode: "BGNLSN93P19H294L"},
+			description:  "should return 400 when body is not validated",
+			route:        "/api/v1/taxcode:calculate-tax-code",
+			body:         `{"gender":"MALE","name":"Alessandro","surname":"Bagnoli","dateOfBirth":"2022-10-29","birthPlace":"","province":"RN"}`,
+			expectedCode: 400,
+			expectedBody: `{"type":"about:blank","title":"Bad Request","status":400,"detail":"Key: 'CalculateTaxCodeRequest.BirthPlace' Error:Field validation for 'BirthPlace' failed on the 'required' tag","instance":"/api/v1/taxcode:calculate-tax-code"}`,
+		},
+		{
+			description:  "should return 400 when body cannot be unmarshalled into go value",
+			route:        "/api/v1/taxcode:calculate-tax-code",
+			body:         `"something I cannot unmarshal into go value"`,
+			expectedCode: 400,
+			expectedBody: `{"type":"about:blank","title":"Bad Request","status":400,"detail":"json: cannot unmarshal string into Go value of type service.CalculateTaxCodeRequest","instance":"/api/v1/taxcode:calculate-tax-code"}`,
 		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.description, func(t *testing.T) {
 			// given
-			h := InitDependencies()
-			app := CreateFiberApp(h)
-			marshal, _ := json.Marshal(test.body)
-			req := httptest.NewRequest(fiber.MethodPost, test.route, bytes.NewReader(marshal))
+			req := httptest.NewRequest(fiber.MethodPost, test.route, bytes.NewReader([]byte(test.body)))
 			req.Header.Set(fiber.HeaderContentType, fiber.MIMEApplicationJSON)
 
 			// when
@@ -74,13 +57,12 @@ func TestHandler_CalculateTaxCode(t *testing.T) {
 			// then
 			assert.Nil(t, err)
 			assert.Equal(t, test.expectedCode, resp.StatusCode)
-			all, err := io.ReadAll(resp.Body)
-			actualBody := new(service.CalculateTaxCodeResponse)
-			if err = json.Unmarshal(all, actualBody); err != nil {
-				log.Fatal(err)
-			}
-			assert.Equal(t, test.expectedBody, *actualBody)
+			all, _ := io.ReadAll(resp.Body)
+			actualBody := string(all)
+			assert.Equal(t, test.expectedBody, actualBody)
 		})
 	}
+
+	_ = app.Shutdown()
 
 }
