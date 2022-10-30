@@ -83,7 +83,4 @@ func TestHandler_All(t *testing.T) {
 			assert.Equal(t, test.expectedBody, actualBody)
 		})
 	}
-
-	_ = app.Shutdown()
-
 }
