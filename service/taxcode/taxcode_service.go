@@ -8,8 +8,8 @@ import (
 type Service struct {
 }
 
-func NewTaxCodeService() *Service {
-	return &Service{}
+func NewTaxCodeService() Service {
+	return Service{}
 }
 
 func (s Service) CalculateTaxCode(req service.CalculateTaxCodeRequest) (service.CalculateTaxCodeResponse, error) {

@@ -14,8 +14,8 @@ type Validator struct {
 	validator validator.Validate
 }
 
-func NewValidator(v validator.Validate) *Validator {
-	return &Validator{v}
+func NewValidator(v validator.Validate) Validator {
+	return Validator{v}
 }
 
 func (v Validator) ValidateCalculateTaxCodeReq(req service.CalculateTaxCodeRequest) error {

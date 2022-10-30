@@ -11,8 +11,8 @@ type Handler struct {
 	validator service.Validator
 }
 
-func NewHandler(service service.TaxCodeService, validator service.Validator) *Handler {
-	return &Handler{service, validator}
+func NewHandler(service service.TaxCodeService, validator service.Validator) Handler {
+	return Handler{service, validator}
 }
 
 // CalculateTaxCode godoc

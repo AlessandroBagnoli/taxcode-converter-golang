@@ -38,7 +38,7 @@ func initDependencies() handler.Handler {
 	validate := configureValidator()
 	v := validatorservice.NewValidator(validate)
 	h := handler.NewHandler(taxCodeService, v)
-	return *h
+	return h
 }
 
 // createFiberApp creates and configure the fiber server
