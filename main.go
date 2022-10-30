@@ -49,6 +49,7 @@ func main() {
 
 func configureFiberLogger() fiber.Handler {
 	return logger.New(logger.Config{
+		// this is because I don't want to log traffic to swagger documentation
 		Next: func(c *fiber.Ctx) bool {
 			return strings.Contains(c.Path(), "/swagger/")
 		},
