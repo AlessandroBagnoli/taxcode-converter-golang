@@ -47,6 +47,9 @@ func configureValidator() validator.Validate {
 	if err := validate.RegisterValidation("notblank", validators.NotBlank); err != nil {
 		log.Fatal(err)
 	}
+	if err := validate.RegisterValidation("taxcode", validatorservice.IsValidTaxCode); err != nil {
+		log.Fatal(err)
+	}
 	validate.RegisterCustomTypeFunc(validatorservice.TimeValue, civil.Date{}, civil.DateTime{}, civil.Time{})
 	if err := validate.RegisterValidation("inthepast", validatorservice.DateInThePast); err != nil {
 		log.Fatal(err)

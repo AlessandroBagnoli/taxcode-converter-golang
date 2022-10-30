@@ -18,7 +18,7 @@ type CalculateTaxCodeResponse struct {
 }
 
 type CalculatePersonDataRequest struct {
-	TaxCode string `json:"taxCode" validate:"required,notblank"`
+	TaxCode string `json:"taxCode" validate:"required,notblank,taxcode"`
 }
 
 type CalculatePersonDataResponse struct {

@@ -3,7 +3,9 @@ package validation
 import (
 	"cloud.google.com/go/civil"
 	"github.com/go-playground/validator/v10"
+	log "github.com/sirupsen/logrus"
 	"reflect"
+	"regexp"
 	"taxcode-converter/service"
 	"time"
 )
@@ -32,7 +34,22 @@ func DateInThePast(fl validator.FieldLevel) bool {
 		casted := civil.DateOf(field.Interface().(time.Time))
 		return casted.Before(civil.DateOf(time.Now()))
 	default:
-		return field.IsValid() && field.Interface() != reflect.Zero(field.Type()).Interface()
+		return false
+	}
+}
+
+func IsValidTaxCode(fl validator.FieldLevel) bool {
+	field := fl.Field()
+
+	switch field.Kind() {
+	case reflect.String:
+		ok, err := regexp.MatchString("^([A-Z]{6}[0-9LMNPQRSTUV]{2}[ABCDEHLMPRST][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z])$|(\\d{11})$", field.String())
+		if err != nil {
+			log.Warn(err)
+		}
+		return ok
+	default:
+		return false
 	}
 }
 
