@@ -1,11 +1,11 @@
-cd ../service || exit
+cd .. || exit
 
-go vet .
+go vet ./...
 
-go fmt .
+go fmt ./...
 
-go install golang.org/x/lint/golint@latest
-golint .
+go install honnef.co/go/tools/cmd/staticcheck@latest
+staticcheck ./...
 
 go install github.com/securego/gosec/v2/cmd/gosec@latest
-gosec .
+gosec ./...
