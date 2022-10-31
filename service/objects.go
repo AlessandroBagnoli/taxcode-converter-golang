@@ -46,7 +46,3 @@ const (
 	// GenderFemale female gender
 	GenderFemale = "FEMALE"
 )
-
-type GenericRequest interface {
-	CalculateTaxCodeRequest | CalculatePersonDataRequest
-}

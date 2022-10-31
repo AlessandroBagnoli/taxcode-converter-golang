@@ -16,7 +16,7 @@ var tagMessagesMap = map[string]string{
 	"taxcode":   "%s must be a valid tax code",
 }
 
-func ValidateReq[T service.GenericRequest](v validator.Validate, req T) error {
+func ValidateReq[T GenericRequest](v validator.Validate, req T) error {
 	var errs []string
 	err := v.Struct(req)
 	if err != nil {
@@ -34,4 +34,8 @@ func ValidateReq[T service.GenericRequest](v validator.Validate, req T) error {
 		return errors.New(strings.Join(errs, ", "))
 	}
 	return nil
+}
+
+type GenericRequest interface {
+	service.CalculateTaxCodeRequest | service.CalculatePersonDataRequest
 }

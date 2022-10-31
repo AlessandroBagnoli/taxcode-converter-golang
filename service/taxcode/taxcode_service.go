@@ -3,7 +3,6 @@ package taxcode
 import (
 	"cloud.google.com/go/civil"
 	"github.com/go-playground/validator/v10"
-	"github.com/gofiber/fiber/v2"
 	"taxcode-converter/service"
 )
 
@@ -17,7 +16,7 @@ func NewTaxCodeService(v validator.Validate) Service {
 
 func (s Service) CalculateTaxCode(req service.CalculateTaxCodeRequest) (*service.CalculateTaxCodeResponse, error) {
 	if err := ValidateReq(s.validator, req); err != nil {
-		return nil, fiber.NewError(fiber.StatusBadRequest, err.Error())
+		return nil, service.NewRuntimeError(400, err.Error())
 	}
 	dummyResponse := &service.CalculateTaxCodeResponse{TaxCode: "BGNLSN93P19H294L"}
 	return dummyResponse, nil
@@ -25,7 +24,7 @@ func (s Service) CalculateTaxCode(req service.CalculateTaxCodeRequest) (*service
 
 func (s Service) CalculatePersonData(req service.CalculatePersonDataRequest) (*service.CalculatePersonDataResponse, error) {
 	if err := ValidateReq(s.validator, req); err != nil {
-		return nil, fiber.NewError(fiber.StatusBadRequest, err.Error())
+		return nil, service.NewRuntimeError(400, err.Error())
 	}
 	dummyResponse := &service.CalculatePersonDataResponse{
 		Gender:  service.GenderMale,

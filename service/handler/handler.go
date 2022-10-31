@@ -78,6 +78,11 @@ func (h Handler) HandleError(c *fiber.Ctx, err error) error {
 		errors.As(err, &fiberError)
 		code = fiberError.Code
 		message = fiberError.Message
+	case service.RuntimeError:
+		var runtimeError service.RuntimeError
+		errors.As(err, &runtimeError)
+		code = runtimeError.Code
+		message = runtimeError.Message
 	}
 
 	problemDetails := problemdetails.New(code, "", "", message, c.Path())
