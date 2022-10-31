@@ -9,6 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	swaggerfiber "github.com/gofiber/swagger"
 	log "github.com/sirupsen/logrus"
+	"reflect"
 	"strings"
 	"taxcode-converter/service/taxcode"
 	validatorservice "taxcode-converter/service/validation"
@@ -62,5 +63,14 @@ func configureValidator() validator.Validate {
 	if err := validate.RegisterValidation("inthepast", validatorservice.DateInThePast); err != nil {
 		log.Fatal(err)
 	}
+	//to use the names which have been specified for JSON representations of structs, rather than normal Go field names
+	validate.RegisterTagNameFunc(func(fld reflect.StructField) string {
+		name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]
+		// skip if tag key says it should be ignored
+		if name == "-" {
+			return ""
+		}
+		return name
+	})
 	return *validate
 }

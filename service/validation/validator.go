@@ -2,13 +2,24 @@ package validation
 
 import (
 	"cloud.google.com/go/civil"
+	"errors"
+	"fmt"
 	"github.com/go-playground/validator/v10"
 	log "github.com/sirupsen/logrus"
 	"reflect"
 	"regexp"
+	"strings"
 	"taxcode-converter/service"
 	"time"
 )
+
+var tagMessagesMap = map[string]string{
+	"required":  "%s is required",
+	"notblank":  "%s must not be blank",
+	"oneof":     "%s must be one of admitted values",
+	"inthepast": "%s must be in the past",
+	"taxcode":   "%s must be a valid tax code",
+}
 
 type Validator struct {
 	validator validator.Validate
@@ -19,11 +30,41 @@ func NewValidator(v validator.Validate) Validator {
 }
 
 func (v Validator) ValidateCalculateTaxCodeReq(req service.CalculateTaxCodeRequest) error {
-	return v.validator.Struct(req)
+	var errs []string
+	if err := v.validator.Struct(req); err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			msg, ok := tagMessagesMap[err.Tag()]
+			if !ok {
+				msg = err.Tag()
+			}
+			errorMsg := fmt.Sprintf(msg, err.Field())
+			errs = append(errs, errorMsg)
+		}
+	}
+
+	if len(errs) > 0 {
+		return errors.New(strings.Join(errs, ", "))
+	}
+	return nil
 }
 
 func (v Validator) ValidateCalculatePersonDataReq(req service.CalculatePersonDataRequest) error {
-	return v.validator.Struct(req)
+	var errs []string
+	if err := v.validator.Struct(req); err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			msg, ok := tagMessagesMap[err.Tag()]
+			if !ok {
+				msg = err.Tag()
+			}
+			errorMsg := fmt.Sprintf(msg, err.Field())
+			errs = append(errs, errorMsg)
+		}
+	}
+
+	if len(errs) > 0 {
+		return errors.New(strings.Join(errs, ", "))
+	}
+	return nil
 }
 
 func DateInThePast(fl validator.FieldLevel) bool {
