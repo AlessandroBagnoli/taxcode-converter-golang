@@ -14,6 +14,6 @@ type Handler interface {
 
 // TaxCodeService declares the business logic functions
 type TaxCodeService interface {
-	CalculateTaxCode(req CalculateTaxCodeRequest) (CalculateTaxCodeResponse, error)
-	CalculatePersonData(req CalculatePersonDataRequest) (CalculatePersonDataResponse, error)
+	CalculateTaxCode(req CalculateTaxCodeRequest) (*CalculateTaxCodeResponse, error)
+	CalculatePersonData(req CalculatePersonDataRequest) (*CalculatePersonDataResponse, error)
 }

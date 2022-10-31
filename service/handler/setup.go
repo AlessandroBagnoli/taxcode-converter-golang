@@ -12,14 +12,13 @@ import (
 	"reflect"
 	"strings"
 	"taxcode-converter/service/taxcode"
-	validatorservice "taxcode-converter/service/validation"
 )
 
 // InitDependencies creates and injects dependencies, returns the handler for incoming http requests
 func InitDependencies() Handler {
-	t := taxcode.NewTaxCodeService()
 	v := createValidator()
-	h := NewHandler(t, v)
+	t := taxcode.NewTaxCodeService(v)
+	h := NewHandler(t)
 	return h
 }
 
@@ -55,11 +54,11 @@ func createValidator() validator.Validate {
 	if err := validate.RegisterValidation("notblank", validators.NotBlank); err != nil {
 		log.Fatal(err)
 	}
-	if err := validate.RegisterValidation("taxcode", validatorservice.ValidTaxCode); err != nil {
+	if err := validate.RegisterValidation("taxcode", taxcode.ValidTaxCode); err != nil {
 		log.Fatal(err)
 	}
-	validate.RegisterCustomTypeFunc(validatorservice.TimeValue, civil.Date{}, civil.DateTime{}, civil.Time{})
-	if err := validate.RegisterValidation("inthepast", validatorservice.DateInThePast); err != nil {
+	validate.RegisterCustomTypeFunc(taxcode.TimeValue, civil.Date{}, civil.DateTime{}, civil.Time{})
+	if err := validate.RegisterValidation("inthepast", taxcode.DateInThePast); err != nil {
 		log.Fatal(err)
 	}
 	//to use the names which have been specified for JSON representations of structs, rather than normal Go field names

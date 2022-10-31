@@ -1,20 +1,18 @@
 package handler
 
 import (
-	"github.com/go-playground/validator/v10"
+	"errors"
 	"github.com/gofiber/fiber/v2"
 	"github.com/mvmaasakkers/go-problemdetails"
 	"taxcode-converter/service"
-	"taxcode-converter/service/validation"
 )
 
 type Handler struct {
-	service   service.TaxCodeService
-	validator validator.Validate
+	service service.TaxCodeService
 }
 
-func NewHandler(service service.TaxCodeService, validator validator.Validate) Handler {
-	return Handler{service, validator}
+func NewHandler(service service.TaxCodeService) Handler {
+	return Handler{service}
 }
 
 // CalculateTaxCode godoc
@@ -32,10 +30,6 @@ func (h Handler) CalculateTaxCode(c *fiber.Ctx) error {
 	req := new(service.CalculateTaxCodeRequest)
 
 	if err := c.BodyParser(req); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-
-	if err := validation.ValidateReq(h.validator, *req); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
@@ -65,10 +59,6 @@ func (h Handler) CalculatePersonData(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	if err := validation.ValidateReq(h.validator, *req); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-
 	data, err := h.service.CalculatePersonData(*req)
 	if err != nil {
 		return err
@@ -79,12 +69,18 @@ func (h Handler) CalculatePersonData(c *fiber.Ctx) error {
 
 // HandleError handles all the error wrapping them into a proper problemdetails.ProblemDetails object
 func (h Handler) HandleError(c *fiber.Ctx, err error) error {
-	code := fiber.StatusInternalServerError
-	message := err.Error()
+	var code int
+	var message string
 
-	if e, ok := err.(*fiber.Error); ok {
-		code = e.Code
-		message = e.Message
+	switch err.(type) {
+	case *fiber.Error:
+		var fiberError *fiber.Error
+		errors.As(err, &fiberError)
+		code = fiberError.Code
+		message = fiberError.Message
+	default:
+		code = fiber.StatusInternalServerError
+		message = err.Error()
 	}
 
 	problemDetails := problemdetails.New(code, "", "", message, c.Path())
