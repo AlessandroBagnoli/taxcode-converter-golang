@@ -29,9 +29,3 @@ jobs:
         run: |
           go test -tags="functional unit" -race -coverprofile=coverage.out -covermode=atomic ./... && \
           go tool cover -html=coverage.out > result.json
-
-      - name: Analyze with SonarCloud
-        uses: sonarsource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
