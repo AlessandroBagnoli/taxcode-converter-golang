@@ -69,8 +69,8 @@ func (h Handler) CalculatePersonData(c *fiber.Ctx) error {
 
 // HandleError handles all the error wrapping them into a proper problemdetails.ProblemDetails object
 func (h Handler) HandleError(c *fiber.Ctx, err error) error {
-	var code int
-	var message string
+	code := fiber.StatusInternalServerError
+	message := err.Error()
 
 	switch err.(type) {
 	case *fiber.Error:
@@ -78,9 +78,6 @@ func (h Handler) HandleError(c *fiber.Ctx, err error) error {
 		errors.As(err, &fiberError)
 		code = fiberError.Code
 		message = fiberError.Message
-	default:
-		code = fiber.StatusInternalServerError
-		message = err.Error()
 	}
 
 	problemDetails := problemdetails.New(code, "", "", message, c.Path())

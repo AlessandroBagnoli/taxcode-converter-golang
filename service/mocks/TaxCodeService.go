@@ -14,14 +14,16 @@ type TaxCodeService struct {
 }
 
 // CalculatePersonData provides a mock function with given fields: req
-func (_m *TaxCodeService) CalculatePersonData(req service.CalculatePersonDataRequest) (service.CalculatePersonDataResponse, error) {
+func (_m *TaxCodeService) CalculatePersonData(req service.CalculatePersonDataRequest) (*service.CalculatePersonDataResponse, error) {
 	ret := _m.Called(req)
 
-	var r0 service.CalculatePersonDataResponse
-	if rf, ok := ret.Get(0).(func(service.CalculatePersonDataRequest) service.CalculatePersonDataResponse); ok {
+	var r0 *service.CalculatePersonDataResponse
+	if rf, ok := ret.Get(0).(func(service.CalculatePersonDataRequest) *service.CalculatePersonDataResponse); ok {
 		r0 = rf(req)
 	} else {
-		r0 = ret.Get(0).(service.CalculatePersonDataResponse)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*service.CalculatePersonDataResponse)
+		}
 	}
 
 	var r1 error
@@ -35,14 +37,16 @@ func (_m *TaxCodeService) CalculatePersonData(req service.CalculatePersonDataReq
 }
 
 // CalculateTaxCode provides a mock function with given fields: req
-func (_m *TaxCodeService) CalculateTaxCode(req service.CalculateTaxCodeRequest) (service.CalculateTaxCodeResponse, error) {
+func (_m *TaxCodeService) CalculateTaxCode(req service.CalculateTaxCodeRequest) (*service.CalculateTaxCodeResponse, error) {
 	ret := _m.Called(req)
 
-	var r0 service.CalculateTaxCodeResponse
-	if rf, ok := ret.Get(0).(func(service.CalculateTaxCodeRequest) service.CalculateTaxCodeResponse); ok {
+	var r0 *service.CalculateTaxCodeResponse
+	if rf, ok := ret.Get(0).(func(service.CalculateTaxCodeRequest) *service.CalculateTaxCodeResponse); ok {
 		r0 = rf(req)
 	} else {
-		r0 = ret.Get(0).(service.CalculateTaxCodeResponse)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*service.CalculateTaxCodeResponse)
+		}
 	}
 
 	var r1 error
