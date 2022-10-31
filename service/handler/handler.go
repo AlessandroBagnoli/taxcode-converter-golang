@@ -1,18 +1,18 @@
 package handler
 
 import (
+	"errors"
 	"github.com/gofiber/fiber/v2"
 	"github.com/mvmaasakkers/go-problemdetails"
 	"taxcode-converter/service"
 )
 
 type Handler struct {
-	service   service.TaxCodeService
-	validator service.Validator
+	service service.TaxCodeService
 }
 
-func NewHandler(service service.TaxCodeService, validator service.Validator) Handler {
-	return Handler{service, validator}
+func NewHandler(service service.TaxCodeService) Handler {
+	return Handler{service}
 }
 
 // CalculateTaxCode godoc
@@ -30,10 +30,6 @@ func (h Handler) CalculateTaxCode(c *fiber.Ctx) error {
 	req := new(service.CalculateTaxCodeRequest)
 
 	if err := c.BodyParser(req); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-
-	if err := h.validator.ValidateCalculateTaxCodeReq(*req); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
@@ -63,10 +59,6 @@ func (h Handler) CalculatePersonData(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	if err := h.validator.ValidateCalculatePersonDataReq(*req); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-
 	data, err := h.service.CalculatePersonData(*req)
 	if err != nil {
 		return err
@@ -80,9 +72,17 @@ func (h Handler) HandleError(c *fiber.Ctx, err error) error {
 	code := fiber.StatusInternalServerError
 	message := err.Error()
 
-	if e, ok := err.(*fiber.Error); ok {
-		code = e.Code
-		message = e.Message
+	switch err.(type) {
+	case *fiber.Error:
+		var fiberError *fiber.Error
+		errors.As(err, &fiberError)
+		code = fiberError.Code
+		message = fiberError.Message
+	case service.RuntimeError:
+		var runtimeError service.RuntimeError
+		errors.As(err, &runtimeError)
+		code = runtimeError.Code
+		message = runtimeError.Message
 	}
 
 	problemDetails := problemdetails.New(code, "", "", message, c.Path())

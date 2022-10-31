@@ -4,16 +4,21 @@ package handler
 
 import (
 	"bytes"
+	"cloud.google.com/go/civil"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http/httptest"
 	"testing"
+	"time"
 )
 
 func TestHandler_All(t *testing.T) {
 	h := InitDependencies()
 	app := CreateFiberApp(h)
+
+	tomorrow := civil.DateOf(time.Now()).AddDays(1).String()
 
 	tests := []struct {
 		description  string
@@ -22,6 +27,7 @@ func TestHandler_All(t *testing.T) {
 		expectedCode int
 		expectedBody string
 	}{
+		// Calculate tax code tests
 		{
 			description:  "taxcode:calculate-tax-code should return 200 with calculated taxcode when request is valid",
 			route:        "/api/v1/taxcode:calculate-tax-code",
@@ -30,11 +36,32 @@ func TestHandler_All(t *testing.T) {
 			expectedBody: `{"taxCode":"BGNLSN93P19H294L"}`,
 		},
 		{
-			description:  "taxcode:calculate-tax-code should return 400 when body is not validated",
+			description:  "taxcode:calculate-tax-code should return 400 when body contains empty birthPlace",
 			route:        "/api/v1/taxcode:calculate-tax-code",
 			body:         `{"gender":"MALE","name":"Alessandro","surname":"Bagnoli","dateOfBirth":"2022-10-29","birthPlace":"","province":"RN"}`,
 			expectedCode: 400,
-			expectedBody: `{"type":"about:blank","title":"Bad Request","status":400,"detail":"Key: 'CalculateTaxCodeRequest.BirthPlace' Error:Field validation for 'BirthPlace' failed on the 'required' tag","instance":"/api/v1/taxcode:calculate-tax-code"}`,
+			expectedBody: `{"type":"about:blank","title":"Bad Request","status":400,"detail":"birthPlace is required","instance":"/api/v1/taxcode:calculate-tax-code"}`,
+		},
+		{
+			description:  "taxcode:calculate-tax-code should return 400 when body contains no name, blank surname, empty birthPlace",
+			route:        "/api/v1/taxcode:calculate-tax-code",
+			body:         `{"gender":"MALE","surname":"    ","dateOfBirth":"2022-10-29","birthPlace":"","province":"RN"}`,
+			expectedCode: 400,
+			expectedBody: `{"type":"about:blank","title":"Bad Request","status":400,"detail":"name is required, surname must not be blank, birthPlace is required","instance":"/api/v1/taxcode:calculate-tax-code"}`,
+		},
+		{
+			description:  "taxcode:calculate-tax-code should return 400 when body contains dateOfBirth not in the past",
+			route:        "/api/v1/taxcode:calculate-tax-code",
+			body:         fmt.Sprintf(`{"gender":"MALE","name":"Alessandro","surname":"Bagnoli","dateOfBirth":"%s","birthPlace":"Rimini","province":"RN"}`, tomorrow),
+			expectedCode: 400,
+			expectedBody: `{"type":"about:blank","title":"Bad Request","status":400,"detail":"dateOfBirth must be in the past","instance":"/api/v1/taxcode:calculate-tax-code"}`,
+		},
+		{
+			description:  "taxcode:calculate-tax-code should return 400 when body contains invalid value for gender",
+			route:        "/api/v1/taxcode:calculate-tax-code",
+			body:         `{"gender":"INVALID_GENDER","name":"Alessandro","surname":"Bagnoli","dateOfBirth":"1993-09-19","birthPlace":"Rimini","province":"RN"}`,
+			expectedCode: 400,
+			expectedBody: `{"type":"about:blank","title":"Bad Request","status":400,"detail":"gender must be one of admitted values","instance":"/api/v1/taxcode:calculate-tax-code"}`,
 		},
 		{
 			description:  "taxcode:calculate-tax-code should return 400 when body cannot be unmarshalled into go value",
@@ -43,6 +70,7 @@ func TestHandler_All(t *testing.T) {
 			expectedCode: 400,
 			expectedBody: `{"type":"about:blank","title":"Bad Request","status":400,"detail":"json: cannot unmarshal string into Go value of type service.CalculateTaxCodeRequest","instance":"/api/v1/taxcode:calculate-tax-code"}`,
 		},
+		// Calculate person data tests
 		{
 			description:  "taxcode:calculate-person-data should return 200 with calculated person data when request is valid",
 			route:        "/api/v1/taxcode:calculate-person-data",
@@ -55,7 +83,7 @@ func TestHandler_All(t *testing.T) {
 			route:        "/api/v1/taxcode:calculate-person-data",
 			body:         `{"taxCode":"notavalidtaxcode"}`,
 			expectedCode: 400,
-			expectedBody: `{"type":"about:blank","title":"Bad Request","status":400,"detail":"Key: 'CalculatePersonDataRequest.TaxCode' Error:Field validation for 'TaxCode' failed on the 'taxcode' tag","instance":"/api/v1/taxcode:calculate-person-data"}`,
+			expectedBody: `{"type":"about:blank","title":"Bad Request","status":400,"detail":"taxCode must be a valid tax code","instance":"/api/v1/taxcode:calculate-person-data"}`,
 		},
 		{
 			description:  "taxcode:calculate-person-data should return 400 when body cannot be unmarshalled into go value",
