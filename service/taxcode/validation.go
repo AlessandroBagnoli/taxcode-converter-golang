@@ -69,12 +69,15 @@ func ValidTaxCode(fl validator.FieldLevel) bool {
 }
 
 func TimeValue(v reflect.Value) interface{} {
-	//TODO extend it for all the types inside civil package
-	n, ok := v.Interface().(civil.Date)
-
-	if !ok {
+	switch v.Interface().(type) {
+	case civil.Date:
+		date := v.Interface().(civil.Date)
+		return date.In(time.UTC)
+	case civil.DateTime:
+		dateTime := v.Interface().(civil.DateTime)
+		return dateTime.In(time.UTC)
+	default:
 		return nil
 	}
 
-	return n.In(time.UTC)
 }

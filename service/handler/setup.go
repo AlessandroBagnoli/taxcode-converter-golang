@@ -57,7 +57,7 @@ func createValidator() validator.Validate {
 	if err := validate.RegisterValidation("taxcode", taxcode.ValidTaxCode); err != nil {
 		log.Fatal(err)
 	}
-	validate.RegisterCustomTypeFunc(taxcode.TimeValue, civil.Date{}, civil.DateTime{}, civil.Time{})
+	validate.RegisterCustomTypeFunc(taxcode.TimeValue, civil.Date{}, civil.DateTime{})
 	if err := validate.RegisterValidation("inthepast", taxcode.DateInThePast); err != nil {
 		log.Fatal(err)
 	}
