@@ -17,10 +17,9 @@ import (
 
 // InitDependencies creates and injects dependencies, returns the handler for incoming http requests
 func InitDependencies() Handler {
-	taxCodeService := taxcode.NewTaxCodeService()
-	validate := configureValidator()
-	v := validatorservice.NewValidator(validate)
-	h := NewHandler(taxCodeService, v)
+	t := taxcode.NewTaxCodeService()
+	v := createValidator()
+	h := NewHandler(t, v)
 	return h
 }
 
@@ -51,7 +50,7 @@ func configureFiberLogger() fiber.Handler {
 	})
 }
 
-func configureValidator() validator.Validate {
+func createValidator() validator.Validate {
 	validate := validator.New()
 	if err := validate.RegisterValidation("notblank", validators.NotBlank); err != nil {
 		log.Fatal(err)

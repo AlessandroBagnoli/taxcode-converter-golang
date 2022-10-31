@@ -17,9 +17,3 @@ type TaxCodeService interface {
 	CalculateTaxCode(req CalculateTaxCodeRequest) (CalculateTaxCodeResponse, error)
 	CalculatePersonData(req CalculatePersonDataRequest) (CalculatePersonDataResponse, error)
 }
-
-// Validator declares all the functions used to validate requests coming from http requests
-type Validator interface {
-	ValidateCalculateTaxCodeReq(req CalculateTaxCodeRequest) error
-	ValidateCalculatePersonDataReq(req CalculatePersonDataRequest) error
-}

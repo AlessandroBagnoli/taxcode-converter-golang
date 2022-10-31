@@ -21,26 +21,9 @@ var tagMessagesMap = map[string]string{
 	"taxcode":   "%s must be a valid tax code",
 }
 
-type Validator struct {
-	validator validator.Validate
-}
-
-func NewValidator(v validator.Validate) Validator {
-	return Validator{v}
-}
-
-func (v Validator) ValidateCalculateTaxCodeReq(req service.CalculateTaxCodeRequest) error {
-	err := v.validator.Struct(req)
-	return processValidationErrors(err)
-}
-
-func (v Validator) ValidateCalculatePersonDataReq(req service.CalculatePersonDataRequest) error {
-	err := v.validator.Struct(req)
-	return processValidationErrors(err)
-}
-
-func processValidationErrors(err error) error {
+func ValidateReq[T service.GenericRequest](v validator.Validate, req T) error {
 	var errs []string
+	err := v.Struct(req)
 	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
 			msg, ok := tagMessagesMap[err.Tag()]

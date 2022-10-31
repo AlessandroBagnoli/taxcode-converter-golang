@@ -1,17 +1,19 @@
 package handler
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/mvmaasakkers/go-problemdetails"
 	"taxcode-converter/service"
+	"taxcode-converter/service/validation"
 )
 
 type Handler struct {
 	service   service.TaxCodeService
-	validator service.Validator
+	validator validator.Validate
 }
 
-func NewHandler(service service.TaxCodeService, validator service.Validator) Handler {
+func NewHandler(service service.TaxCodeService, validator validator.Validate) Handler {
 	return Handler{service, validator}
 }
 
@@ -33,7 +35,7 @@ func (h Handler) CalculateTaxCode(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	if err := h.validator.ValidateCalculateTaxCodeReq(*req); err != nil {
+	if err := validation.ValidateReq(h.validator, *req); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
@@ -63,7 +65,7 @@ func (h Handler) CalculatePersonData(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
-	if err := h.validator.ValidateCalculatePersonDataReq(*req); err != nil {
+	if err := validation.ValidateReq(h.validator, *req); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, err.Error())
 	}
 
