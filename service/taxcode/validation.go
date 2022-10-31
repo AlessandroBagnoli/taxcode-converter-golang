@@ -1,7 +1,6 @@
 package taxcode
 
 import (
-	"errors"
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"strings"
@@ -31,7 +30,7 @@ func ValidateReq[T GenericRequest](v validator.Validate, req T) error {
 	}
 
 	if len(errs) > 0 {
-		return errors.New(strings.Join(errs, ", "))
+		return service.NewRuntimeError(400, strings.Join(errs, ", "))
 	}
 	return nil
 }
