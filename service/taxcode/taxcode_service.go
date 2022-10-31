@@ -16,7 +16,7 @@ func NewTaxCodeService(v validator.Validate) Service {
 
 func (s Service) CalculateTaxCode(req service.CalculateTaxCodeRequest) (*service.CalculateTaxCodeResponse, error) {
 	if err := ValidateReq(s.validator, req); err != nil {
-		return nil, service.NewRuntimeError(400, err.Error())
+		return nil, err
 	}
 	dummyResponse := &service.CalculateTaxCodeResponse{TaxCode: "BGNLSN93P19H294L"}
 	return dummyResponse, nil
@@ -24,7 +24,7 @@ func (s Service) CalculateTaxCode(req service.CalculateTaxCodeRequest) (*service
 
 func (s Service) CalculatePersonData(req service.CalculatePersonDataRequest) (*service.CalculatePersonDataResponse, error) {
 	if err := ValidateReq(s.validator, req); err != nil {
-		return nil, service.NewRuntimeError(400, err.Error())
+		return nil, err
 	}
 	dummyResponse := &service.CalculatePersonDataResponse{
 		Gender:  service.GenderMale,
