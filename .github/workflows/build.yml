@@ -27,7 +27,7 @@ jobs:
       - name: Unit and functional tests
         working-directory: service
         run: |
-          go test -tags="functional unit" -race -coverprofile=coverage.out -covermode=atomic ./... > result.json && \
+          go test -tags="functional unit" -race -coverprofile=coverage.out -covermode=atomic ./... && \
           go tool cover -html=coverage.out
 
       - name: Analyze with SonarCloud
