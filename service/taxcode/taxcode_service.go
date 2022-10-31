@@ -27,7 +27,7 @@ func (s Service) CalculatePersonData(req service.CalculatePersonDataRequest) (*s
 		return nil, service.NewRuntimeError(400, err.Error())
 	}
 	dummyResponse := &service.CalculatePersonDataResponse{
-		Gender:  service.GenderMale,
+		Gender:  service.GenderFemale,
 		Name:    "Alessandro",
 		Surname: "Bagnoli",
 		DateOfBirth: civil.Date{
