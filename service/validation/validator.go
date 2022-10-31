@@ -30,27 +30,18 @@ func NewValidator(v validator.Validate) Validator {
 }
 
 func (v Validator) ValidateCalculateTaxCodeReq(req service.CalculateTaxCodeRequest) error {
-	var errs []string
-	if err := v.validator.Struct(req); err != nil {
-		for _, err := range err.(validator.ValidationErrors) {
-			msg, ok := tagMessagesMap[err.Tag()]
-			if !ok {
-				msg = err.Tag()
-			}
-			errorMsg := fmt.Sprintf(msg, err.Field())
-			errs = append(errs, errorMsg)
-		}
-	}
-
-	if len(errs) > 0 {
-		return errors.New(strings.Join(errs, ", "))
-	}
-	return nil
+	err := v.validator.Struct(req)
+	return processValidationErrors(err)
 }
 
 func (v Validator) ValidateCalculatePersonDataReq(req service.CalculatePersonDataRequest) error {
+	err := v.validator.Struct(req)
+	return processValidationErrors(err)
+}
+
+func processValidationErrors(err error) error {
 	var errs []string
-	if err := v.validator.Struct(req); err != nil {
+	if err != nil {
 		for _, err := range err.(validator.ValidationErrors) {
 			msg, ok := tagMessagesMap[err.Tag()]
 			if !ok {
