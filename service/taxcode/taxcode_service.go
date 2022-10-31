@@ -18,9 +18,6 @@ func (s Service) CalculateTaxCode(req service.CalculateTaxCodeRequest) (*service
 	if err := ValidateReq(s.validator, req); err != nil {
 		return nil, service.NewRuntimeError(400, err.Error())
 	}
-	if err := ValidateReq(s.validator, req); err != nil {
-		return nil, service.NewRuntimeError(400, err.Error())
-	}
 	dummyResponse := &service.CalculateTaxCodeResponse{TaxCode: "BGNLSN93P19H294L"}
 	return dummyResponse, nil
 }
