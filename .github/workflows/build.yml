@@ -21,7 +21,10 @@ jobs:
           go-version: '1.19'
           check-latest: true
 
-      - name: security unit and functional
+      - name: Build
+        run: go build -v ./...
+
+      - name: Unit and functional tests
         working-directory: service
         run: |
           go test -tags="functional unit" -race -coverprofile=coverage.out -covermode=atomic ./... && \
