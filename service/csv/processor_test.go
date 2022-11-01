@@ -8,40 +8,19 @@ import (
 	"testing"
 )
 
-func TestProcessor_ParseCities(t *testing.T) {
+func TestNewProcessor(t *testing.T) {
 	// given
-	underTest := NewProcessor()
 
 	// when
-	actual := underTest.ParseCities()
+	actual := NewProcessor()
 
 	// then
-	assert.Equal(t, 7904, len(actual))
-	assert.Contains(t, actual, service.CityCSV{
+	assert.Equal(t, 7904, len(actual.cities))
+	assert.Contains(t, actual.cities, service.CityCSV{
 		Name:     "RIMINI",
 		Province: "RN",
 		Code:     "H294",
 	})
-}
-
-func TestProcessor_GetCityCodesCache(t *testing.T) {
-	// given
-	underTest := NewProcessor()
-
-	// when
-	actual := underTest.GetCityCodesCache(nil)
-
-	// then
-	assert.Empty(t, actual)
-}
-
-func TestProcessor_GetCityPlacesCache(t *testing.T) {
-	// given
-	underTest := NewProcessor()
-
-	// when
-	actual := underTest.GetCityPlacesCache(nil)
-
-	// then
-	assert.Empty(t, actual)
+	assert.NotEmpty(t, actual.cityPlacesCache)
+	assert.NotEmpty(t, actual.cityCodesCache)
 }

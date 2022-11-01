@@ -19,7 +19,6 @@ type TaxCodeService interface {
 }
 
 type CsvProcessor interface {
-	ParseCities() []CityCSV
-	GetCityCodesCache([]CityCSV) map[string]CityCSV
-	GetCityPlacesCache([]CityCSV) map[Place]CityCSV
+	CityCodesCache() map[string]CityCSV
+	CityPlacesCache() map[Place]CityCSV
 }

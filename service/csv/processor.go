@@ -14,13 +14,32 @@ import (
 //go:embed assets/italian-cities.csv
 var content embed.FS
 
-type Processor struct{}
-
-func NewProcessor() Processor {
-	return Processor{}
+type Processor struct {
+	cities          []service.CityCSV
+	cityCodesCache  map[string]service.CityCSV
+	cityPlacesCache map[service.Place]service.CityCSV
 }
 
-func (Processor) ParseCities() []service.CityCSV {
+func (p Processor) CityCodesCache() map[string]service.CityCSV {
+	return p.cityCodesCache
+}
+
+func (p Processor) CityPlacesCache() map[service.Place]service.CityCSV {
+	return p.cityPlacesCache
+}
+
+func NewProcessor() Processor {
+	cities := parseCities()
+	cityCodesCache := createCityCodesCache(cities)
+	cityPlacesCache := createCityPlacesCache(cities)
+	return Processor{
+		cities:          cities,
+		cityCodesCache:  cityCodesCache,
+		cityPlacesCache: cityPlacesCache,
+	}
+}
+
+func parseCities() []service.CityCSV {
 	clientsFile, err := content.Open("assets/italian-cities.csv")
 	if err != nil {
 		log.Panic(err)
@@ -42,7 +61,7 @@ func (Processor) ParseCities() []service.CityCSV {
 	return cities
 }
 
-func (Processor) GetCityCodesCache(cities []service.CityCSV) map[string]service.CityCSV {
+func createCityCodesCache(cities []service.CityCSV) map[string]service.CityCSV {
 	cache := make(map[string]service.CityCSV)
 	for _, city := range cities {
 		cache[city.Code] = city
@@ -50,7 +69,7 @@ func (Processor) GetCityCodesCache(cities []service.CityCSV) map[string]service.
 	return cache
 }
 
-func (Processor) GetCityPlacesCache(cities []service.CityCSV) map[service.Place]service.CityCSV {
+func createCityPlacesCache(cities []service.CityCSV) map[service.Place]service.CityCSV {
 	cache := make(map[service.Place]service.CityCSV)
 	for _, city := range cities {
 		place := service.Place{
