@@ -2,7 +2,6 @@ package main
 
 import (
 	_ "embed"
-	log "github.com/sirupsen/logrus"
 	_ "taxcode-converter/docs"
 	"taxcode-converter/service/handler"
 )
@@ -19,6 +18,5 @@ var csvFile []byte
 
 func main() {
 	h := handler.InitDependencies(csvFile)
-	app := handler.CreateFiberApp(h)
-	log.Fatal(app.Listen(":8080"))
+	_ = handler.CreateFiberApp(h).Listen(":8080")
 }

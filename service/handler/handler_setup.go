@@ -5,7 +5,11 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	swaggerfiber "github.com/gofiber/swagger"
+	log "github.com/sirupsen/logrus"
+	"os"
+	"os/signal"
 	"strings"
+	"syscall"
 	"taxcode-converter/service/csv"
 	"taxcode-converter/service/taxcode"
 )
@@ -33,7 +37,22 @@ func CreateFiberApp(h Handler) *fiber.App {
 	v1 := app.Group("/api/v1")
 	v1.Post("/taxcode:calculate-tax-code", h.CalculateTaxCode)
 	v1.Post("/taxcode:calculate-person-data", h.CalculatePersonData)
+
+	// handling of signals for graceful shutdown
+	gracefulShutDown(app)
+
 	return app
+}
+
+func gracefulShutDown(app *fiber.App) {
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	go func() {
+		for range c {
+			log.Infof("Gracefully shutting down...")
+			_ = app.Shutdown()
+		}
+	}()
 }
 
 func configureFiberLogger() fiber.Handler {
