@@ -6,13 +6,15 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	swaggerfiber "github.com/gofiber/swagger"
 	"strings"
+	"taxcode-converter/service/csv"
 	"taxcode-converter/service/taxcode"
 )
 
 // InitDependencies creates and injects dependencies, returns the handler for incoming http requests
 func InitDependencies() Handler {
 	v := taxcode.CreateValidator()
-	t := taxcode.NewTaxCodeService(v)
+	p := csv.NewProcessor()
+	t := taxcode.NewTaxCodeService(v, p)
 	h := NewHandler(t)
 	return h
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/stretchr/testify/assert"
 	"taxcode-converter/service"
+	"taxcode-converter/service/mocks"
 	"testing"
 )
 
@@ -15,6 +16,7 @@ import (
 func TestService_CalculatePersonData(t *testing.T) {
 	type fields struct {
 		validator validator.Validate
+		processor service.CsvProcessor
 	}
 	type args struct {
 		req service.CalculatePersonDataRequest
@@ -28,7 +30,7 @@ func TestService_CalculatePersonData(t *testing.T) {
 	}{
 		{
 			name:    "",
-			fields:  fields{validator: CreateValidator()},
+			fields:  fields{validator: CreateValidator(), processor: new(mocks.CsvProcessor)},
 			args:    args{req: service.CalculatePersonDataRequest{TaxCode: ""}},
 			want:    nil,
 			wantErr: assert.Error,
@@ -36,7 +38,7 @@ func TestService_CalculatePersonData(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := NewTaxCodeService(tt.fields.validator)
+			s := NewTaxCodeService(tt.fields.validator, tt.fields.processor)
 			got, err := s.CalculatePersonData(tt.args.req)
 			if !tt.wantErr(t, err, fmt.Sprintf("CalculatePersonData(%v)", tt.args.req)) {
 				return
@@ -49,6 +51,7 @@ func TestService_CalculatePersonData(t *testing.T) {
 func TestService_CalculateTaxCode(t *testing.T) {
 	type fields struct {
 		validator validator.Validate
+		processor service.CsvProcessor
 	}
 	type args struct {
 		req service.CalculateTaxCodeRequest
@@ -62,7 +65,7 @@ func TestService_CalculateTaxCode(t *testing.T) {
 	}{
 		{
 			name:   "",
-			fields: fields{validator: CreateValidator()},
+			fields: fields{validator: CreateValidator(), processor: new(mocks.CsvProcessor)},
 			args: args{req: service.CalculateTaxCodeRequest{
 				Gender:      "",
 				Name:        "",
@@ -77,8 +80,13 @@ func TestService_CalculateTaxCode(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := NewTaxCodeService(tt.fields.validator)
+			// given
+			s := NewTaxCodeService(tt.fields.validator, tt.fields.processor)
+
+			// when
 			got, err := s.CalculateTaxCode(tt.args.req)
+
+			// then
 			if !tt.wantErr(t, err, fmt.Sprintf("CalculateTaxCode(%v)", tt.args.req)) {
 				return
 			}

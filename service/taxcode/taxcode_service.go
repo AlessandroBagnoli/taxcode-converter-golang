@@ -8,10 +8,11 @@ import (
 
 type Service struct {
 	validator validator.Validate
+	processor service.CsvProcessor
 }
 
-func NewTaxCodeService(v validator.Validate) Service {
-	return Service{validator: v}
+func NewTaxCodeService(v validator.Validate, p service.CsvProcessor) Service {
+	return Service{validator: v, processor: p}
 }
 
 func (s Service) CalculateTaxCode(req service.CalculateTaxCodeRequest) (*service.CalculateTaxCodeResponse, error) {
