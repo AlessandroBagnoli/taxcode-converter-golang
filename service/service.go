@@ -17,3 +17,8 @@ type TaxCodeService interface {
 	CalculateTaxCode(req CalculateTaxCodeRequest) (*CalculateTaxCodeResponse, error)
 	CalculatePersonData(req CalculatePersonDataRequest) (*CalculatePersonDataResponse, error)
 }
+
+type CsvProcessor interface {
+	CityCodesCache() map[string]CityCSV
+	CityPlacesCache() map[Place]CityCSV
+}
