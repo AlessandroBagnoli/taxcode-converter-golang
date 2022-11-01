@@ -24,6 +24,7 @@ func NewProcessor(file []byte) Processor {
 		cityCodesCache:  cityCodesCache,
 		cityPlacesCache: cityPlacesCache,
 	}
+
 }
 
 func (p Processor) CityFromCode(code string) *service.CityCSV {
