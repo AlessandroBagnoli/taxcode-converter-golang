@@ -40,12 +40,22 @@ func (Processor) ParseCities() []service.CityCSV {
 	return cities
 }
 
-func (p Processor) GetCityCodesCache(cities []service.CityCSV) map[string]service.CityCSV {
-	//TODO implement me
-	panic("implement me")
+func (Processor) GetCityCodesCache(cities []service.CityCSV) map[string]service.CityCSV {
+	cache := make(map[string]service.CityCSV)
+	for _, city := range cities {
+		cache[city.Code] = city
+	}
+	return cache
 }
 
-func (p Processor) GetCityPlacesCache(cities []service.CityCSV) map[service.Place]service.CityCSV {
-	//TODO implement me
-	panic("implement me")
+func (Processor) GetCityPlacesCache(cities []service.CityCSV) map[service.Place]service.CityCSV {
+	cache := make(map[service.Place]service.CityCSV)
+	for _, city := range cities {
+		place := service.Place{
+			CityName: city.Name,
+			Province: city.Province,
+		}
+		cache[place] = city
+	}
+	return cache
 }

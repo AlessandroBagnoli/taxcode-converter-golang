@@ -23,3 +23,25 @@ func TestProcessor_ParseCities(t *testing.T) {
 		Code:     "H294",
 	})
 }
+
+func TestProcessor_GetCityCodesCache(t *testing.T) {
+	// given
+	underTest := NewProcessor()
+
+	// when
+	actual := underTest.GetCityCodesCache(nil)
+
+	// then
+	assert.Empty(t, actual)
+}
+
+func TestProcessor_GetCityPlacesCache(t *testing.T) {
+	// given
+	underTest := NewProcessor()
+
+	// when
+	actual := underTest.GetCityPlacesCache(nil)
+
+	// then
+	assert.Empty(t, actual)
+}
