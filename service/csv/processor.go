@@ -9,6 +9,8 @@ import (
 	"taxcode-converter/service"
 )
 
+// TODO I dont want the actual resource inside the module...find a way to externalize it and at the same time to keep the methods testable
+//
 //go:embed assets/italian-cities.csv
 var content embed.FS
 
