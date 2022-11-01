@@ -1,7 +1,7 @@
 package main
 
 import (
-	log "github.com/sirupsen/logrus"
+	_ "embed"
 	_ "taxcode-converter/docs"
 	"taxcode-converter/service/handler"
 )
@@ -12,8 +12,11 @@ import (
 // @BasePath /
 //
 //go:generate swag init --pd
+
+//go:embed assets/italian-cities.csv
+var csvFile []byte
+
 func main() {
-	h := handler.InitDependencies()
-	app := handler.CreateFiberApp(h)
-	log.Fatal(app.Listen(":8080"))
+	h := handler.InitDependencies(csvFile)
+	_ = handler.CreateFiberApp(h).Listen(":8080")
 }

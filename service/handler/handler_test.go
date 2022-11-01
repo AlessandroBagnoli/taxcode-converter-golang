@@ -10,12 +10,14 @@ import (
 	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http/httptest"
+	"os"
 	"testing"
 	"time"
 )
 
 func TestHandler_All(t *testing.T) {
-	h := InitDependencies()
+	file, _ := os.ReadFile("../../assets/italian-cities.csv")
+	h := InitDependencies(file)
 	app := CreateFiberApp(h)
 
 	tomorrow := civil.DateOf(time.Now()).AddDays(1).String()
