@@ -4,15 +4,17 @@ package csv
 
 import (
 	"github.com/stretchr/testify/assert"
+	"os"
 	"taxcode-converter/service"
 	"testing"
 )
 
 func TestNewProcessor(t *testing.T) {
 	// given
+	file, _ := os.ReadFile("../../assets/italian-cities.csv")
 
 	// when
-	actual := NewProcessor()
+	actual := NewProcessor(file)
 
 	// then
 	assert.Equal(t, 7904, len(actual.cities))

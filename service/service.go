@@ -18,7 +18,8 @@ type TaxCodeService interface {
 	CalculatePersonData(req CalculatePersonDataRequest) (*CalculatePersonDataResponse, error)
 }
 
+// CsvProcessor declares utility functions to get data from the parsed csv of cities
 type CsvProcessor interface {
-	CityCodesCache() map[string]CityCSV
-	CityPlacesCache() map[Place]CityCSV
+	CityFromCode(code string) CityCSV
+	CityFromPlace(place Place) CityCSV
 }

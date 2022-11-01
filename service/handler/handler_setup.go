@@ -11,9 +11,9 @@ import (
 )
 
 // InitDependencies creates and injects dependencies, returns the handler for incoming http requests
-func InitDependencies() Handler {
+func InitDependencies(file []byte) Handler {
 	v := taxcode.CreateValidator()
-	p := csv.NewProcessor()
+	p := csv.NewProcessor(file)
 	t := taxcode.NewTaxCodeService(v, p)
 	h := NewHandler(t)
 	return h
