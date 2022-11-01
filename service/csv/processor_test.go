@@ -42,6 +42,7 @@ func TestProcessor_CityFromCode(t *testing.T) {
 		{name: "H294 should return RIMINI", input: "H294", expected: &service.CityCSV{Name: "RIMINI", Province: "RN", Code: "H294"}},
 		{name: "A074 should return AGLIÈ", input: "A074", expected: &service.CityCSV{Name: "AGLIÈ", Province: "TO", Code: "A074"}},
 		{name: "A275 should return ANDEZENO", input: "A275", expected: &service.CityCSV{Name: "ANDEZENO", Province: "TO", Code: "A275"}},
+		{name: "M333 should return SANT'OMOBONO TERME", input: "M333", expected: &service.CityCSV{Name: "SANT'OMOBONO TERME", Province: "BG", Code: "M333"}},
 		{name: "code not existing should return nil", input: "dummyCode", expected: nil},
 		{name: "empty string should return nil", input: "", expected: nil},
 	}
@@ -60,9 +61,31 @@ func TestProcessor_CityFromCode(t *testing.T) {
 }
 
 func TestProcessor_CityFromPlace(t *testing.T) {
-	// given
+	processor := setup()
 
-	// when
+	tests := []struct {
+		name     string
+		input    service.Place
+		expected *service.CityCSV
+	}{
+		{name: "RIMINI should return RIMINI", input: service.Place{CityName: "RIMINI", Province: "RN"}, expected: &service.CityCSV{Name: "RIMINI", Province: "RN", Code: "H294"}},
+		{name: "AGLIÈ should return AGLIÈ", input: service.Place{CityName: "AGLIÈ", Province: "TO"}, expected: &service.CityCSV{Name: "AGLIÈ", Province: "TO", Code: "A074"}},
+		{name: "ANDEZENO should return ANDEZENO", input: service.Place{CityName: "ANDEZENO", Province: "TO"}, expected: &service.CityCSV{Name: "ANDEZENO", Province: "TO", Code: "A275"}},
+		{name: "SANT'OMOBONO TERME should return SANT'OMOBONO TERME", input: service.Place{CityName: "SANT'OMOBONO TERME", Province: "BG"}, expected: &service.CityCSV{Name: "SANT'OMOBONO TERME", Province: "BG", Code: "M333"}},
+		{name: "empty city and province should return nil", input: service.Place{CityName: "", Province: ""}, expected: nil},
+		{name: "empty city should return nil", input: service.Place{CityName: "", Province: "RN"}, expected: nil},
+		{name: "empty province should return nil", input: service.Place{CityName: "RIMINI", Province: ""}, expected: nil},
+	}
 
-	// then
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			// given
+
+			// when
+			actual := processor.CityFromPlace(test.input)
+
+			// then
+			assert.Equal(t, test.expected, actual)
+		})
+	}
 }
