@@ -20,6 +20,6 @@ type TaxCodeService interface {
 
 // CsvProcessor declares utility functions to get data from the parsed csv of cities
 type CsvProcessor interface {
-	CityFromCode(code string) CityCSV
-	CityFromPlace(place Place) CityCSV
+	CityFromCode(code string) *CityCSV
+	CityFromPlace(place Place) *CityCSV
 }

@@ -10,9 +10,9 @@ import (
 )
 
 type Processor struct {
-	cities          []service.CityCSV
-	cityCodesCache  map[string]service.CityCSV
-	cityPlacesCache map[service.Place]service.CityCSV
+	cities          []*service.CityCSV
+	cityCodesCache  map[string]*service.CityCSV
+	cityPlacesCache map[service.Place]*service.CityCSV
 }
 
 func NewProcessor(file []byte) Processor {
@@ -26,15 +26,15 @@ func NewProcessor(file []byte) Processor {
 	}
 }
 
-func (p Processor) CityFromCode(code string) service.CityCSV {
+func (p Processor) CityFromCode(code string) *service.CityCSV {
 	return p.cityCodesCache[code]
 }
 
-func (p Processor) CityFromPlace(place service.Place) service.CityCSV {
+func (p Processor) CityFromPlace(place service.Place) *service.CityCSV {
 	return p.cityPlacesCache[place]
 }
 
-func parseCities(file []byte) []service.CityCSV {
+func parseCities(file []byte) []*service.CityCSV {
 	gocsv.SetCSVReader(func(in io.Reader) gocsv.CSVReader {
 		r := csv.NewReader(in)
 		r.TrimLeadingSpace = true
@@ -42,7 +42,7 @@ func parseCities(file []byte) []service.CityCSV {
 		return r
 	})
 
-	var cities []service.CityCSV
+	var cities []*service.CityCSV
 	if err := gocsv.Unmarshal(bytes.NewReader(file), &cities); err != nil {
 		log.Panic(err)
 	}
@@ -51,16 +51,16 @@ func parseCities(file []byte) []service.CityCSV {
 	return cities
 }
 
-func createCityCodesCache(cities []service.CityCSV) map[string]service.CityCSV {
-	cache := make(map[string]service.CityCSV)
+func createCityCodesCache(cities []*service.CityCSV) map[string]*service.CityCSV {
+	cache := make(map[string]*service.CityCSV)
 	for _, city := range cities {
 		cache[city.Code] = city
 	}
 	return cache
 }
 
-func createCityPlacesCache(cities []service.CityCSV) map[service.Place]service.CityCSV {
-	cache := make(map[service.Place]service.CityCSV)
+func createCityPlacesCache(cities []*service.CityCSV) map[service.Place]*service.CityCSV {
+	cache := make(map[service.Place]*service.CityCSV)
 	for _, city := range cities {
 		place := service.Place{
 			CityName: city.Name,

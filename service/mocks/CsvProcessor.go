@@ -14,28 +14,32 @@ type CsvProcessor struct {
 }
 
 // CityFromCode provides a mock function with given fields: code
-func (_m *CsvProcessor) CityFromCode(code string) service.CityCSV {
+func (_m *CsvProcessor) CityFromCode(code string) *service.CityCSV {
 	ret := _m.Called(code)
 
-	var r0 service.CityCSV
-	if rf, ok := ret.Get(0).(func(string) service.CityCSV); ok {
+	var r0 *service.CityCSV
+	if rf, ok := ret.Get(0).(func(string) *service.CityCSV); ok {
 		r0 = rf(code)
 	} else {
-		r0 = ret.Get(0).(service.CityCSV)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*service.CityCSV)
+		}
 	}
 
 	return r0
 }
 
 // CityFromPlace provides a mock function with given fields: place
-func (_m *CsvProcessor) CityFromPlace(place service.Place) service.CityCSV {
+func (_m *CsvProcessor) CityFromPlace(place service.Place) *service.CityCSV {
 	ret := _m.Called(place)
 
-	var r0 service.CityCSV
-	if rf, ok := ret.Get(0).(func(service.Place) service.CityCSV); ok {
+	var r0 *service.CityCSV
+	if rf, ok := ret.Get(0).(func(service.Place) *service.CityCSV); ok {
 		r0 = rf(place)
 	} else {
-		r0 = ret.Get(0).(service.CityCSV)
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*service.CityCSV)
+		}
 	}
 
 	return r0
