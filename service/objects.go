@@ -46,3 +46,14 @@ const (
 	// GenderFemale female gender
 	GenderFemale = "FEMALE"
 )
+
+type CityCSV struct {
+	Name     string `csv:"NAME"`
+	Province string `csv:"PROVINCE"`
+	Code     string `csv:"CODE"`
+}
+
+type Place struct {
+	CityName string
+	Province string
+}
