@@ -19,6 +19,7 @@ func (s Service) CalculateTaxCode(req service.CalculateTaxCodeRequest) (*service
 	if err := ValidateReq(s.validator, req); err != nil {
 		return nil, err
 	}
+	// TODO implement BL
 	dummyResponse := &service.CalculateTaxCodeResponse{TaxCode: "BGNLSN93P19H294L"}
 	return dummyResponse, nil
 }
@@ -27,6 +28,7 @@ func (s Service) CalculatePersonData(req service.CalculatePersonDataRequest) (*s
 	if err := ValidateReq(s.validator, req); err != nil {
 		return nil, err
 	}
+	// TODO implement BL
 	dummyResponse := &service.CalculatePersonDataResponse{
 		Gender:  service.GenderMale,
 		Name:    "Alessandro",
