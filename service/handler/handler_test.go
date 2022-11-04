@@ -78,7 +78,7 @@ func TestHandler_All(t *testing.T) {
 			route:        "/api/v1/taxcode:calculate-person-data",
 			body:         `{"taxCode":"BGNLSN93P19H294L"}`,
 			expectedCode: 200,
-			expectedBody: `{"gender":"MALE","name":"Alessandro","surname":"Bagnoli","dateOfBirth":"1993-09-19","birthPlace":"Rimini","province":"RN","taxCode":"BGNLSN93P19H294L"}`,
+			expectedBody: `{"gender":"MALE","name":"LSN","surname":"BGN","dateOfBirth":"1993-09-19","birthPlace":"RIMINI","province":"RN","taxCode":"BGNLSN93P19H294L"}`,
 		},
 		{
 			description:  "taxcode:calculate-person-data should return 400 when body contains invalid tax code",
