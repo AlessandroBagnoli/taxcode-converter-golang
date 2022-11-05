@@ -25,5 +25,5 @@ func (s Service) CalculatePersonData(req service.CalculatePersonDataRequest) (*s
 	if err := ValidateReq(s.validator, req); err != nil {
 		return nil, err
 	}
-	return reverseTaxCode(req, s.processor.CityFromCode)
+	return reverseTaxCode(req.TaxCode, s.processor.CityFromCode)
 }

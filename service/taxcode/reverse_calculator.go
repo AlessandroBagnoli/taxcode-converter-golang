@@ -24,8 +24,8 @@ var charMonthMap = map[string]int{
 	"T": 12,
 }
 
-func reverseTaxCode(req service.CalculatePersonDataRequest, cityExtractor func(string) *service.CityCSV) (*service.CalculatePersonDataResponse, error) {
-	taxCode := strings.ToUpper(req.TaxCode)
+func reverseTaxCode(tc string, cityExtractor func(string) *service.CityCSV) (*service.CalculatePersonDataResponse, error) {
+	taxCode := strings.ToUpper(tc)
 	// surname + name
 	surname := taxCode[0:3]
 	name := taxCode[3:6]
@@ -42,10 +42,7 @@ func reverseTaxCode(req service.CalculatePersonDataRequest, cityExtractor func(s
 
 	// month
 	m := taxCode[8:9]
-	month, ok := charMonthMap[m]
-	if !ok {
-		month = 0
-	}
+	month := charMonthMap[m]
 
 	// year
 	lastTwoDigitsThisYear := civil.DateOf(time.Now()).Year % 1e2
