@@ -52,7 +52,7 @@ func TestValidateCalculateTaxCodeRequest(t *testing.T) {
 				BirthPlace: "Roma",
 				Province:   "RM",
 			},
-			expected: service.NewRuntimeError(400, "name must not be blank"),
+			expected: service.NewValidationError("name must not be blank"),
 		},
 	}
 
@@ -85,7 +85,7 @@ func TestValidateCalculatePersonDataRequest(t *testing.T) {
 		{
 			description: "should return error when CalculateTaxCodeRequest is not ok",
 			input:       service.CalculatePersonDataRequest{TaxCode: "dummyTaxCode"},
-			expected:    service.NewRuntimeError(400, "taxCode must be a valid tax code"),
+			expected:    service.NewValidationError("taxCode must be a valid tax code"),
 		},
 	}
 

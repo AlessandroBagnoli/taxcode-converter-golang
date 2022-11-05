@@ -4,93 +4,79 @@ package taxcode
 
 import (
 	"cloud.google.com/go/civil"
-	"fmt"
 	"github.com/go-playground/validator/v10"
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 	"taxcode-converter/service"
 	"taxcode-converter/service/mocks"
 	"testing"
 )
 
-// TODO to fix all the tests
-func TestService_CalculatePersonData(t *testing.T) {
-	type fields struct {
-		validator validator.Validate
-		processor service.CsvProcessor
-	}
-	type args struct {
-		req service.CalculatePersonDataRequest
-	}
-	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		want    *service.CalculatePersonDataResponse
-		wantErr assert.ErrorAssertionFunc
-	}{
-		{
-			name:    "",
-			fields:  fields{validator: CreateValidator(), processor: new(mocks.CsvProcessor)},
-			args:    args{req: service.CalculatePersonDataRequest{TaxCode: ""}},
-			want:    nil,
-			wantErr: assert.Error,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			s := NewTaxCodeService(tt.fields.validator, tt.fields.processor)
-			got, err := s.CalculatePersonData(tt.args.req)
-			if !tt.wantErr(t, err, fmt.Sprintf("CalculatePersonData(%v)", tt.args.req)) {
-				return
-			}
-			assert.Equalf(t, tt.want, got, "CalculatePersonData(%v)", tt.args.req)
-		})
-	}
+type TaxCodeServiceTestSuite struct {
+	suite.Suite
+	validate  validator.Validate
+	processor *mocks.CsvProcessor
+	underTest service.TaxCodeService
 }
 
-func TestService_CalculateTaxCode(t *testing.T) {
-	type fields struct {
-		validator validator.Validate
-		processor service.CsvProcessor
-	}
-	type args struct {
-		req service.CalculateTaxCodeRequest
-	}
-	tests := []struct {
-		name    string
-		fields  fields
-		args    args
-		want    *service.CalculateTaxCodeResponse
-		wantErr assert.ErrorAssertionFunc
-	}{
-		{
-			name:   "",
-			fields: fields{validator: CreateValidator(), processor: new(mocks.CsvProcessor)},
-			args: args{req: service.CalculateTaxCodeRequest{
-				Gender:      "",
-				Name:        "",
-				Surname:     "",
-				DateOfBirth: civil.Date{},
-				BirthPlace:  "",
-				Province:    "",
-			}},
-			want:    nil,
-			wantErr: assert.Error,
+func (suite *TaxCodeServiceTestSuite) SetupTest() {
+	suite.validate = CreateValidator()
+	suite.processor = new(mocks.CsvProcessor)
+	suite.underTest = NewTaxCodeService(suite.validate, suite.processor)
+}
+
+func (suite *TaxCodeServiceTestSuite) TearDownTest() {
+	suite.processor.AssertExpectations(suite.T())
+}
+
+func (suite *TaxCodeServiceTestSuite) Test_CalculatePersonDataSuccess() {
+	input := service.CalculatePersonDataRequest{TaxCode: "BGNLSN93P19H294L"}
+	suite.processor.On("CityFromCode", "H294").Return(&service.CityCSV{
+		Name:     "RIMINI",
+		Province: "RN",
+		Code:     "H294",
+	})
+
+	// when
+	actual, err := suite.underTest.CalculatePersonData(input)
+
+	// then
+	suite.NotNil(actual)
+	suite.Nil(err)
+	expected := &service.CalculatePersonDataResponse{
+		Gender:  service.GenderMale,
+		Name:    "LSN",
+		Surname: "BGN",
+		DateOfBirth: civil.Date{
+			Year:  1993,
+			Month: 9,
+			Day:   19,
 		},
+		BirthPlace: "RIMINI",
+		Province:   "RN",
+		TaxCode:    "BGNLSN93P19H294L",
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			// given
-			s := NewTaxCodeService(tt.fields.validator, tt.fields.processor)
+	suite.Equal(expected, actual)
+}
 
-			// when
-			got, err := s.CalculateTaxCode(tt.args.req)
+func (suite *TaxCodeServiceTestSuite) Test_CalculatePersonDataReturnsErrorWhenNotValidRequest() {
+	// given
+	input := service.CalculatePersonDataRequest{TaxCode: "dummyTaxCode"}
 
-			// then
-			if !tt.wantErr(t, err, fmt.Sprintf("CalculateTaxCode(%v)", tt.args.req)) {
-				return
-			}
-			assert.Equalf(t, tt.want, got, "CalculateTaxCode(%v)", tt.args.req)
-		})
-	}
+	// when
+	actual, err := suite.underTest.CalculatePersonData(input)
+
+	// then
+	suite.Nil(actual)
+	suite.NotNil(err)
+	expected := service.NewValidationError("taxCode must be a valid tax code")
+	suite.Equal(expected, err)
+}
+
+// TODO to fix when implementation ready
+func (suite *TaxCodeServiceTestSuite) Test_CalculateTaxCode() {
+	suite.True(true)
+}
+
+func Test_TaxCodeService(t *testing.T) {
+	suite.Run(t, new(TaxCodeServiceTestSuite))
 }
