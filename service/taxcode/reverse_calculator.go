@@ -2,6 +2,7 @@ package taxcode
 
 import (
 	"cloud.google.com/go/civil"
+	"fmt"
 	"strconv"
 	"strings"
 	"taxcode-converter/service"
@@ -23,7 +24,7 @@ var charMonthMap = map[string]int{
 	"T": 12,
 }
 
-func reverseTaxCode(req service.CalculatePersonDataRequest, cityExtractor func(string) *service.CityCSV) *service.CalculatePersonDataResponse {
+func reverseTaxCode(req service.CalculatePersonDataRequest, cityExtractor func(string) *service.CityCSV) (*service.CalculatePersonDataResponse, error) {
 	taxCode := strings.ToUpper(req.TaxCode)
 	// surname + name
 	surname := taxCode[0:3]
@@ -64,6 +65,9 @@ func reverseTaxCode(req service.CalculatePersonDataRequest, cityExtractor func(s
 	// city
 	cityCode := taxCode[11:15]
 	city := cityExtractor(cityCode)
+	if city == nil {
+		return nil, service.NewCityNotPresentError(fmt.Sprintf("The city with code %s does not exixts", cityCode))
+	}
 
 	personData := &service.CalculatePersonDataResponse{
 		Gender:      service.Gender(gender),
@@ -74,5 +78,5 @@ func reverseTaxCode(req service.CalculatePersonDataRequest, cityExtractor func(s
 		Province:    strings.ToUpper(city.Province),
 		TaxCode:     taxCode,
 	}
-	return personData
+	return personData, nil
 }

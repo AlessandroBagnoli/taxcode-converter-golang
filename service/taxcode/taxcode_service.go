@@ -18,14 +18,12 @@ func (s Service) CalculateTaxCode(req service.CalculateTaxCodeRequest) (*service
 	if err := ValidateReq(s.validator, req); err != nil {
 		return nil, err
 	}
-	res := calculate(req, s.processor.CityFromPlace)
-	return res, nil
+	return calculate(req, s.processor.CityFromPlace)
 }
 
 func (s Service) CalculatePersonData(req service.CalculatePersonDataRequest) (*service.CalculatePersonDataResponse, error) {
 	if err := ValidateReq(s.validator, req); err != nil {
 		return nil, err
 	}
-	res := reverseTaxCode(req, s.processor.CityFromCode)
-	return res, nil
+	return reverseTaxCode(req, s.processor.CityFromCode)
 }

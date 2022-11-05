@@ -30,7 +30,7 @@ func ValidateReq[T GenericRequest](v validator.Validate, req T) error {
 	}
 
 	if len(errs) > 0 {
-		return service.NewRuntimeError(400, strings.Join(errs, ", "))
+		return service.NewValidationError(strings.Join(errs, ", "))
 	}
 	return nil
 }

@@ -2,7 +2,7 @@ package taxcode
 
 import "taxcode-converter/service"
 
-func calculate(req service.CalculateTaxCodeRequest, cityExtractor func(place service.Place) *service.CityCSV) *service.CalculateTaxCodeResponse {
+func calculate(req service.CalculateTaxCodeRequest, cityExtractor func(place service.Place) *service.CityCSV) (*service.CalculateTaxCodeResponse, error) {
 	//TODO implement BL
-	return &service.CalculateTaxCodeResponse{TaxCode: "BGNLSN93P19H294L"}
+	return &service.CalculateTaxCodeResponse{TaxCode: "BGNLSN93P19H294L"}, nil
 }
