@@ -2,8 +2,10 @@ package main
 
 import (
 	_ "embed"
+	"fmt"
 	"github.com/sirupsen/logrus"
 	_ "taxcode-converter/docs"
+	"taxcode-converter/service/config"
 	"taxcode-converter/service/handler"
 	"time"
 )
@@ -20,8 +22,9 @@ var csvFile []byte
 //
 //go:generate swag init --pd
 func main() {
+	conf := config.NewConfig()
 	h := handler.InitDependencies(csvFile)
 	app := handler.CreateFiberApp(h)
-	logrus.Infof("App started in %v", time.Since(start))
-	logrus.Fatal(app.Listen(":8080"))
+	logrus.Infof("App started in %f seconds", time.Since(start).Seconds())
+	_ = app.Listen(fmt.Sprintf(":%d", conf.RestPort))
 }
