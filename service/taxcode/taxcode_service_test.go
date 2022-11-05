@@ -4,38 +4,44 @@ package taxcode
 
 import (
 	"cloud.google.com/go/civil"
-	"github.com/stretchr/testify/assert"
+	"github.com/go-playground/validator/v10"
+	"github.com/stretchr/testify/suite"
 	"taxcode-converter/service"
 	"taxcode-converter/service/mocks"
 	"testing"
 )
 
-type dependencies struct {
-	mockProcessor *mocks.CsvProcessor
+type TaxCodeServiceTestSuite struct {
+	suite.Suite
+	validate  validator.Validate
+	processor *mocks.CsvProcessor
+	underTest service.TaxCodeService
 }
 
-func setupTaxCodeService() (service.TaxCodeService, dependencies) {
-	d := dependencies{mockProcessor: new(mocks.CsvProcessor)}
-	underTest := NewTaxCodeService(CreateValidator(), d.mockProcessor)
-	return underTest, d
+func (suite *TaxCodeServiceTestSuite) SetupTest() {
+	suite.validate = CreateValidator()
+	suite.processor = new(mocks.CsvProcessor)
+	suite.underTest = NewTaxCodeService(suite.validate, suite.processor)
 }
 
-func TestService_CalculatePersonDataSuccess(t *testing.T) {
-	// given
-	underTest, dependencies := setupTaxCodeService()
+func (suite *TaxCodeServiceTestSuite) TearDownTest() {
+	suite.processor.AssertExpectations(suite.T())
+}
+
+func (suite *TaxCodeServiceTestSuite) Test_CalculatePersonDataSuccess() {
 	input := service.CalculatePersonDataRequest{TaxCode: "BGNLSN93P19H294L"}
-	dependencies.mockProcessor.On("CityFromCode", "H294").Return(&service.CityCSV{
+	suite.processor.On("CityFromCode", "H294").Return(&service.CityCSV{
 		Name:     "RIMINI",
 		Province: "RN",
 		Code:     "H294",
 	})
 
 	// when
-	actual, err := underTest.CalculatePersonData(input)
+	actual, err := suite.underTest.CalculatePersonData(input)
 
 	// then
-	assert.NotNil(t, actual)
-	assert.Nil(t, err)
+	suite.NotNil(actual)
+	suite.Nil(err)
 	expected := &service.CalculatePersonDataResponse{
 		Gender:  service.GenderMale,
 		Name:    "LSN",
@@ -49,27 +55,28 @@ func TestService_CalculatePersonDataSuccess(t *testing.T) {
 		Province:   "RN",
 		TaxCode:    "BGNLSN93P19H294L",
 	}
-	assert.Equal(t, expected, actual)
-	dependencies.mockProcessor.AssertExpectations(t)
+	suite.Equal(expected, actual)
 }
 
-func TestService_CalculatePersonDataReturnsErrorWhenNotValidRequest(t *testing.T) {
+func (suite *TaxCodeServiceTestSuite) Test_CalculatePersonDataReturnsErrorWhenNotValidRequest() {
 	// given
-	underTest, dependencies := setupTaxCodeService()
 	input := service.CalculatePersonDataRequest{TaxCode: "dummyTaxCode"}
 
 	// when
-	actual, err := underTest.CalculatePersonData(input)
+	actual, err := suite.underTest.CalculatePersonData(input)
 
 	// then
-	assert.Nil(t, actual)
-	assert.NotNil(t, err)
+	suite.Nil(actual)
+	suite.NotNil(err)
 	expected := service.NewValidationError("taxCode must be a valid tax code")
-	assert.Equal(t, expected, err)
-	dependencies.mockProcessor.AssertExpectations(t)
+	suite.Equal(expected, err)
 }
 
-// TODO to fix all the tests
-func TestService_CalculateTaxCode(t *testing.T) {
-	assert.True(t, true)
+// TODO to fix when implementation ready
+func (suite *TaxCodeServiceTestSuite) Test_CalculateTaxCode() {
+	suite.True(true)
+}
+
+func Test_TaxCodeService(t *testing.T) {
+	suite.Run(t, new(TaxCodeServiceTestSuite))
 }
