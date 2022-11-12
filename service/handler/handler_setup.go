@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	swaggerfiber "github.com/gofiber/swagger"
 	log "github.com/sirupsen/logrus"
+	"io"
 	"os"
 	"os/signal"
 	"strings"
@@ -15,7 +16,7 @@ import (
 )
 
 // InitDependencies creates and injects dependencies, returns the handler for incoming http requests
-func InitDependencies(file []byte) Handler {
+func InitDependencies(file io.Reader) Handler {
 	v := taxcode.CreateValidator()
 	p := csv.NewProcessor(file)
 	t := taxcode.NewTaxCodeService(v, p)

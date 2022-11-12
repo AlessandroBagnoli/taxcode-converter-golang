@@ -10,7 +10,7 @@ import (
 )
 
 func setup() Processor {
-	file, _ := os.ReadFile("../../assets/italian-cities.csv")
+	file, _ := os.Open("../../assets/italian-cities.csv")
 	return NewProcessor(file)
 }
 

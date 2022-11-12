@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	_ "embed"
 	"fmt"
 	"github.com/sirupsen/logrus"
@@ -23,7 +24,7 @@ var csvFile []byte
 //go:generate swag init --pd
 func main() {
 	conf := config.NewConfig()
-	h := handler.InitDependencies(csvFile)
+	h := handler.InitDependencies(bytes.NewReader(csvFile))
 	app := handler.CreateFiberApp(h)
 	logrus.Infof("App started in %f seconds", time.Since(start).Seconds())
 	_ = app.Listen(fmt.Sprintf(":%d", conf.RestPort))
