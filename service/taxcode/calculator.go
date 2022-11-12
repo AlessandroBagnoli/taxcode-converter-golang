@@ -3,7 +3,6 @@ package taxcode
 import (
 	"bytes"
 	"fmt"
-	"golang.org/x/exp/slices"
 	"strconv"
 	"strings"
 	"taxcode-converter/service"
@@ -84,24 +83,4 @@ func calculate(req service.CalculateTaxCodeRequest, cityExtractor func(place ser
 	fiscalCode.WriteString(controlCharacter)
 
 	return &service.CalculateTaxCodeResponse{TaxCode: fiscalCode.String()}, nil
-}
-
-func consonants(word string) string {
-	var consonants bytes.Buffer
-	for _, char := range word {
-		if !slices.Contains(vowelsSlice, char) {
-			consonants.WriteRune(char)
-		}
-	}
-	return consonants.String()
-}
-
-func vowels(word string) string {
-	var consonants bytes.Buffer
-	for _, char := range word {
-		if slices.Contains(vowelsSlice, char) {
-			consonants.WriteRune(char)
-		}
-	}
-	return consonants.String()
 }

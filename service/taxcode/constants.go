@@ -1,5 +1,10 @@
 package taxcode
 
+import (
+	"bytes"
+	"golang.org/x/exp/slices"
+)
+
 var charMonthMap = map[string]int{
 	"A": 1,
 	"B": 2,
@@ -192,4 +197,24 @@ var nameFunctionMap = map[int]func(vowels string, consonants string) string{
 	1: case1,
 	2: case2,
 	3: case3,
+}
+
+var consonants = func(word string) string {
+	var consonants bytes.Buffer
+	for _, char := range word {
+		if !slices.Contains(vowelsSlice, char) {
+			consonants.WriteRune(char)
+		}
+	}
+	return consonants.String()
+}
+
+var vowels = func(word string) string {
+	var consonants bytes.Buffer
+	for _, char := range word {
+		if slices.Contains(vowelsSlice, char) {
+			consonants.WriteRune(char)
+		}
+	}
+	return consonants.String()
 }
