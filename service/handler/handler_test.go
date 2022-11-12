@@ -16,7 +16,7 @@ import (
 )
 
 func TestHandler_All(t *testing.T) {
-	file, _ := os.ReadFile("../../assets/italian-cities.csv")
+	file, _ := os.Open("../../assets/italian-cities.csv")
 	h := InitDependencies(file)
 	app := CreateFiberApp(h)
 

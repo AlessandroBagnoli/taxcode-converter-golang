@@ -1,7 +1,6 @@
 package csv
 
 import (
-	"bytes"
 	"encoding/csv"
 	"github.com/gocarina/gocsv"
 	log "github.com/sirupsen/logrus"
@@ -15,7 +14,7 @@ type Processor struct {
 	cityPlacesCache map[service.Place]*service.CityCSV
 }
 
-func NewProcessor(file []byte) Processor {
+func NewProcessor(file io.Reader) Processor {
 	cities := parseCities(file)
 	cityCodesCache := createCityCodesCache(cities)
 	cityPlacesCache := createCityPlacesCache(cities)
@@ -34,7 +33,7 @@ func (p Processor) CityFromPlace(place service.Place) *service.CityCSV {
 	return p.cityPlacesCache[place]
 }
 
-func parseCities(file []byte) []*service.CityCSV {
+func parseCities(file io.Reader) []*service.CityCSV {
 	gocsv.SetCSVReader(func(in io.Reader) gocsv.CSVReader {
 		r := csv.NewReader(in)
 		r.TrimLeadingSpace = true
@@ -43,7 +42,7 @@ func parseCities(file []byte) []*service.CityCSV {
 	})
 
 	var cities []*service.CityCSV
-	if err := gocsv.Unmarshal(bytes.NewReader(file), &cities); err != nil {
+	if err := gocsv.Unmarshal(file, &cities); err != nil {
 		log.Panic(err)
 	}
 

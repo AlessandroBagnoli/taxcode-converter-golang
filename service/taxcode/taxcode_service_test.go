@@ -72,9 +72,82 @@ func (suite *TaxCodeServiceTestSuite) Test_CalculatePersonDataReturnsErrorWhenNo
 	suite.Equal(expected, err)
 }
 
-// TODO to fix when implementation ready
-func (suite *TaxCodeServiceTestSuite) Test_CalculateTaxCode() {
-	suite.True(true)
+func (suite *TaxCodeServiceTestSuite) Test_CalculateTaxCodeSuccess() {
+	// given
+	input := service.CalculateTaxCodeRequest{
+		Gender:  service.GenderMale,
+		Name:    "Alessandro",
+		Surname: "Bagnoli",
+		DateOfBirth: civil.Date{
+			Year:  1993,
+			Month: 9,
+			Day:   19,
+		},
+		BirthPlace: "Rimini",
+		Province:   "RN",
+	}
+	suite.processor.On("CityFromPlace", service.Place{CityName: "RIMINI", Province: "RN"}).
+		Return(&service.CityCSV{Name: "RIMINI", Province: "RN", Code: "H294"})
+
+	// when
+	actual, err := suite.underTest.CalculateTaxCode(input)
+
+	// then
+	suite.Nil(err)
+	suite.NotNil(actual)
+	expected := &service.CalculateTaxCodeResponse{TaxCode: "BGNLSN93P19H294L"}
+	suite.Equal(expected, actual)
+}
+
+func (suite *TaxCodeServiceTestSuite) Test_CalculateTaxCodeReturnsErrorWhenCalculateFailsDueToCityNotPresent() {
+	// given
+	input := service.CalculateTaxCodeRequest{
+		Gender:  service.GenderMale,
+		Name:    "Alessandro",
+		Surname: "Bagnoli",
+		DateOfBirth: civil.Date{
+			Year:  1993,
+			Month: 9,
+			Day:   19,
+		},
+		BirthPlace: "Rimini",
+		Province:   "RN",
+	}
+	suite.processor.On("CityFromPlace", service.Place{CityName: "RIMINI", Province: "RN"}).Return(nil)
+
+	// when
+	actual, err := suite.underTest.CalculateTaxCode(input)
+
+	// then
+	suite.Nil(actual)
+	suite.NotNil(err)
+	expected := service.NewCityNotPresentError("The city Rimini and province RN do not exixt")
+	suite.Equal(expected, err)
+}
+
+func (suite *TaxCodeServiceTestSuite) Test_CalculateTaxCodeReturnsErrorWhenNoValidRequest() {
+	// given
+	input := service.CalculateTaxCodeRequest{
+		Gender:  service.GenderMale,
+		Name:    "",
+		Surname: "",
+		DateOfBirth: civil.Date{
+			Year:  1993,
+			Month: 9,
+			Day:   19,
+		},
+		BirthPlace: "Rimini",
+		Province:   "RN",
+	}
+
+	// when
+	actual, err := suite.underTest.CalculateTaxCode(input)
+
+	// then
+	suite.Nil(actual)
+	suite.NotNil(err)
+	expected := service.NewValidationError("name is required, surname is required")
+	suite.Equal(expected, err)
 }
 
 func Test_TaxCodeService(t *testing.T) {
