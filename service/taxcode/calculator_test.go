@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func TestService_CalculateTaxCode(t *testing.T) {
+func TestService_calculateTaxCodeSuccess(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    service.CalculateTaxCodeRequest
@@ -145,4 +145,30 @@ func TestService_CalculateTaxCode(t *testing.T) {
 			assert.Equal(t, tt.expected, actual)
 		})
 	}
+}
+
+func TestService_CalculateTaxCode(t *testing.T) {
+	// given
+	input := service.CalculateTaxCodeRequest{
+		Gender:  service.GenderMale,
+		Name:    "Someone",
+		Surname: "Someone",
+		DateOfBirth: civil.Date{
+			Year:  2000,
+			Month: 10,
+			Day:   10,
+		},
+		BirthPlace: "some place",
+		Province:   "some province",
+	}
+	extractor := func(place service.Place) *service.CityCSV { return nil }
+
+	// when
+	actual, err := calculate(input, extractor)
+
+	// then
+	assert.Empty(t, actual)
+	assert.NotNil(t, err)
+	expected := service.NewCityNotPresentError("The city some place and province some province do not exixt")
+	assert.Equal(t, expected, err)
 }

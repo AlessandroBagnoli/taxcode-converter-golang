@@ -76,9 +76,7 @@ func Test_reverseTaxCodeSuccess(t *testing.T) {
 func Test_reverseTaxCodeShouldFailWhenNoCityFound(t *testing.T) {
 	// given
 	input := "BGNLSN93P19H294L"
-	extractor := func(s string) *service.CityCSV {
-		return nil
-	}
+	extractor := func(s string) *service.CityCSV { return nil }
 
 	// when
 	actual, err := reverseTaxCode(input, extractor)
