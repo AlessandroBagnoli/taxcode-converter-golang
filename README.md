@@ -1,6 +1,6 @@
 # taxcode-converter-golang
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AlessandroBagnoli_taxcode-converter-golang&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=AlessandroBagnoli_taxcode-converter-golang) [![codecov](https://codecov.io/gh/AlessandroBagnoli/taxcode-converter-golang/branch/develop/graph/badge.svg?token=9LUSBEJTHE)](https://codecov.io/gh/AlessandroBagnoli/taxcode-converter-golang) ![Known Vulnerabilities](https://snyk.io/test/github/AlessandroBagnoli/taxcode-converter-golang/badge.svg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AlessandroBagnoli_taxcode-converter-golang&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=AlessandroBagnoli_taxcode-converter-golang) [![codecov](https://codecov.io/gh/AlessandroBagnoli/taxcode-converter-golang/branch/develop/graph/badge.svg?token=9LUSBEJTHE)](https://codecov.io/gh/AlessandroBagnoli/taxcode-converter-golang)
 
 taxcode-converter-golang is a simple golang service exposing two REST APIs dealing with italian tax code (_codice
 fiscale_).
@@ -15,18 +15,18 @@ Calculate data of a person starting from his tax code.
 
 ##### Parameters
 
-| Name                       | Located in | Description                | Required | Schema                                                                    |
-|----------------------------|------------|----------------------------|----------|---------------------------------------------------------------------------|
-| CalculatePersonDataRequest | body       | CalculatePersonDataRequest | Yes      | [service.CalculatePersonDataRequest](#service.CalculatePersonDataRequest) |
+| Name                       | Located in | Description                | Required | Schema                                                                   |
+|----------------------------|------------|----------------------------|----------|--------------------------------------------------------------------------|
+| CalculatePersonDataRequest | body       | CalculatePersonDataRequest | Yes      | [service.CalculatePersonDataRequest](#servicecalculatepersondatarequest) |
 
 ##### Responses
 
-| Code | Description           | Schema                                                                      |
-|------|-----------------------|-----------------------------------------------------------------------------|
-| 200  | OK                    | [service.CalculatePersonDataResponse](#service.CalculatePersonDataResponse) |
-| 400  | Bad Request           | [problemdetails.ProblemDetails](#problemdetails.ProblemDetails)             |
-| 404  | Not Found             | [problemdetails.ProblemDetails](#problemdetails.ProblemDetails)             |
-| 500  | Internal Server Error | [problemdetails.ProblemDetails](#problemdetails.ProblemDetails)             |
+| Code | Description           | Schema                                                                     |
+|------|-----------------------|----------------------------------------------------------------------------|
+| 200  | OK                    | [service.CalculatePersonDataResponse](#servicecalculatepersondataresponse) |
+| 400  | Bad Request           | [problemdetails.ProblemDetails](#problemdetailsproblemdetails)             |
+| 404  | Not Found             | [problemdetails.ProblemDetails](#problemdetailsproblemdetails)             |
+| 500  | Internal Server Error | [problemdetails.ProblemDetails](#problemdetailsproblemdetails)             |
 
 ### /api/v1/taxcode:calculate-tax-code
 
@@ -38,18 +38,18 @@ Calculate tax code starting from the data of a person.
 
 ##### Parameters
 
-| Name                    | Located in | Description             | Required | Schema                                                              |
-|-------------------------|------------|-------------------------|----------|---------------------------------------------------------------------|
-| CalculateTaxCodeRequest | body       | CalculateTaxCodeRequest | Yes      | [service.CalculateTaxCodeRequest](#service.CalculateTaxCodeRequest) |
+| Name                    | Located in | Description             | Required | Schema                                                             |
+|-------------------------|------------|-------------------------|----------|--------------------------------------------------------------------|
+| CalculateTaxCodeRequest | body       | CalculateTaxCodeRequest | Yes      | [service.CalculateTaxCodeRequest](#servicecalculatetaxcoderequest) |
 
 ##### Responses
 
-| Code | Description           | Schema                                                                |
-|------|-----------------------|-----------------------------------------------------------------------|
-| 200  | OK                    | [service.CalculateTaxCodeResponse](#service.CalculateTaxCodeResponse) |
-| 400  | Bad Request           | [problemdetails.ProblemDetails](#problemdetails.ProblemDetails)       |
-| 404  | Not Found             | [problemdetails.ProblemDetails](#problemdetails.ProblemDetails)       |
-| 500  | Internal Server Error | [problemdetails.ProblemDetails](#problemdetails.ProblemDetails)       |
+| Code | Description           | Schema                                                               |
+|------|-----------------------|----------------------------------------------------------------------|
+| 200  | OK                    | [service.CalculateTaxCodeResponse](#servicecalculatetaxcoderesponse) |
+| 400  | Bad Request           | [problemdetails.ProblemDetails](#problemdetailsproblemdetails)       |
+| 404  | Not Found             | [problemdetails.ProblemDetails](#problemdetailsproblemdetails)       |
+| 500  | Internal Server Error | [problemdetails.ProblemDetails](#problemdetailsproblemdetails)       |
 
 ### Models
 
