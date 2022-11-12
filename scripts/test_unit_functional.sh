@@ -1,0 +1,3 @@
+cd ../service || exit
+go test -tags="functional unit" -race -coverprofile=coverage.out -covermode=atomic ./...
+go tool cover -html=coverage.out
