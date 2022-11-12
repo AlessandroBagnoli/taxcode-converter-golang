@@ -3,6 +3,7 @@ package taxcode
 import (
 	"bytes"
 	"fmt"
+	"regexp"
 	"strconv"
 	"strings"
 	"taxcode-converter/service"
@@ -11,8 +12,9 @@ import (
 
 func calculate(req service.CalculateTaxCodeRequest, cityExtractor func(place service.Place) *service.CityCSV) (*service.CalculateTaxCodeResponse, error) {
 	var fiscalCode bytes.Buffer
-	fcSurname := strings.ToUpper(req.Surname) //TODO fine tune
-	fcName := strings.ToUpper(req.Name)       // TODO fine tune
+	regex := regexp.MustCompile("[^A-Z]")
+	fcSurname := regex.ReplaceAllString(strings.ReplaceAll(strings.ToUpper(req.Surname), " ", ""), " ")
+	fcName := regex.ReplaceAllString(strings.ReplaceAll(strings.ToUpper(req.Name), " ", ""), " ")
 	fcBirthDate := req.DateOfBirth.In(time.UTC).Format("02-01-2006")
 
 	// surname
@@ -76,11 +78,19 @@ func calculate(req service.CalculateTaxCodeRequest, cityExtractor func(place ser
 	fiscalCode.WriteString(city.Code)
 
 	// control char
-	evenSum := 0 //TODO complete
-	oddSum := 0  // TODO complete
+	evenSum := reduce([]int{1, 3, 5, 7, 9, 11, 13}, 0, func(a int, b int) int { return a + evenSumMap[fiscalCode.String()[b:b+1]] })
+	oddSum := reduce([]int{0, 2, 4, 6, 8, 10, 12, 14}, 0, func(a int, b int) int { return a + oddSumMap[fiscalCode.String()[b:b+1]] })
 	controlInteger := (evenSum + oddSum) % 26
 	controlCharacter := controlCharMap[controlInteger]
 	fiscalCode.WriteString(controlCharacter)
 
 	return &service.CalculateTaxCodeResponse{TaxCode: fiscalCode.String()}, nil
+}
+
+func reduce[T, M any](s []T, initValue M, op func(M, T) M) M {
+	acc := initValue
+	for _, v := range s {
+		acc = op(acc, v)
+	}
+	return acc
 }
