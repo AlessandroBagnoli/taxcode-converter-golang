@@ -99,6 +99,32 @@ func (suite *TaxCodeServiceTestSuite) Test_CalculateTaxCodeSuccess() {
 	suite.Equal(expected, actual)
 }
 
+func (suite *TaxCodeServiceTestSuite) Test_CalculateTaxCodeReturnsErrorWhenCalculateFailsDueToCityNotPresent() {
+	// given
+	input := service.CalculateTaxCodeRequest{
+		Gender:  service.GenderMale,
+		Name:    "Alessandro",
+		Surname: "Bagnoli",
+		DateOfBirth: civil.Date{
+			Year:  1993,
+			Month: 9,
+			Day:   19,
+		},
+		BirthPlace: "Rimini",
+		Province:   "RN",
+	}
+	suite.processor.On("CityFromPlace", service.Place{CityName: "RIMINI", Province: "RN"}).Return(nil)
+
+	// when
+	actual, err := suite.underTest.CalculateTaxCode(input)
+
+	// then
+	suite.Nil(actual)
+	suite.NotNil(err)
+	expected := service.NewCityNotPresentError("The city Rimini and province RN do not exixt")
+	suite.Equal(expected, err)
+}
+
 func (suite *TaxCodeServiceTestSuite) Test_CalculateTaxCodeReturnsErrorWhenNoValidRequest() {
 	// given
 	input := service.CalculateTaxCodeRequest{
