@@ -15,18 +15,18 @@ Calculate data of a person starting from his tax code.
 
 ##### Parameters
 
-| Name                       | Located in | Description                | Required | Schema                                                                   |
-|----------------------------|------------|----------------------------|----------|--------------------------------------------------------------------------|
-| CalculatePersonDataRequest | body       | CalculatePersonDataRequest | Yes      | [service.CalculatePersonDataRequest](#servicecalculatepersondatarequest) |
+| Name                       | Located in | Description                | Required | Schema                                                    |
+|----------------------------|------------|----------------------------|----------|-----------------------------------------------------------|
+| CalculatePersonDataRequest | body       | CalculatePersonDataRequest | Yes      | [CalculatePersonDataRequest](#calculatepersondatarequest) |
 
 ##### Responses
 
-| Code | Description           | Schema                                                                     |
-|------|-----------------------|----------------------------------------------------------------------------|
-| 200  | OK                    | [service.CalculatePersonDataResponse](#servicecalculatepersondataresponse) |
-| 400  | Bad Request           | [problemdetails.ProblemDetails](#problemdetailsproblemdetails)             |
-| 404  | Not Found             | [problemdetails.ProblemDetails](#problemdetailsproblemdetails)             |
-| 500  | Internal Server Error | [problemdetails.ProblemDetails](#problemdetailsproblemdetails)             |
+| Code | Description           | Schema                                                      |
+|------|-----------------------|-------------------------------------------------------------|
+| 200  | OK                    | [CalculatePersonDataResponse](#calculatepersondataresponse) |
+| 400  | Bad Request           | [ProblemDetails](#problemdetails)                           |
+| 404  | Not Found             | [ProblemDetails](#problemdetails)                           |
+| 500  | Internal Server Error | [ProblemDetails](#problemdetails)                           |
 
 ### /api/v1/taxcode:calculate-tax-code
 
@@ -38,22 +38,22 @@ Calculate tax code starting from the data of a person.
 
 ##### Parameters
 
-| Name                    | Located in | Description             | Required | Schema                                                             |
-|-------------------------|------------|-------------------------|----------|--------------------------------------------------------------------|
-| CalculateTaxCodeRequest | body       | CalculateTaxCodeRequest | Yes      | [service.CalculateTaxCodeRequest](#servicecalculatetaxcoderequest) |
+| Name                    | Located in | Description             | Required | Schema                                              |
+|-------------------------|------------|-------------------------|----------|-----------------------------------------------------|
+| CalculateTaxCodeRequest | body       | CalculateTaxCodeRequest | Yes      | [CalculateTaxCodeRequest](#calculatetaxcoderequest) |
 
 ##### Responses
 
-| Code | Description           | Schema                                                               |
-|------|-----------------------|----------------------------------------------------------------------|
-| 200  | OK                    | [service.CalculateTaxCodeResponse](#servicecalculatetaxcoderesponse) |
-| 400  | Bad Request           | [problemdetails.ProblemDetails](#problemdetailsproblemdetails)       |
-| 404  | Not Found             | [problemdetails.ProblemDetails](#problemdetailsproblemdetails)       |
-| 500  | Internal Server Error | [problemdetails.ProblemDetails](#problemdetailsproblemdetails)       |
+| Code | Description           | Schema                                                |
+|------|-----------------------|-------------------------------------------------------|
+| 200  | OK                    | [CalculateTaxCodeResponse](#calculatetaxcoderesponse) |
+| 400  | Bad Request           | [ProblemDetails](#problemdetails)                     |
+| 404  | Not Found             | [ProblemDetails](#problemdetails)                     |
+| 500  | Internal Server Error | [ProblemDetails](#problemdetails)                     |
 
 ### Models
 
-#### problemdetails.ProblemDetails
+#### ProblemDetails
 
 | Name     | Type    | Description                                                                                                                                                                                                                                                                                                      | Required |
 |----------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|
@@ -63,13 +63,13 @@ Calculate tax code starting from the data of a person.
 | title    | string  | Title is a short, human-readable summary of the problem type.  It SHOULD NOT change from occurrence to occurrence of the problem, except for purposes of localization (e.g., using proactive content negotiation; see [RFC7231], Section 3.4).                                                                   | No       |
 | type     | string  | Type is a URI reference [RFC3986] that identifies the problem type. This specification encourages that, when dereferenced, it provide human-readable documentation for the problem type (e.g., using HTML [W3C.REC-html5-20141028]).  When this member is not present, its value is assumed to be "about:blank". | No       |
 
-#### service.CalculatePersonDataRequest
+#### CalculatePersonDataRequest
 
 | Name    | Type   | Description | Required |
 |---------|--------|-------------|----------|
 | taxCode | string |             | Yes      |
 
-#### service.CalculatePersonDataResponse
+#### CalculatePersonDataResponse
 
 | Name        | Type   | Description | Required |
 |-------------|--------|-------------|----------|
@@ -81,7 +81,7 @@ Calculate tax code starting from the data of a person.
 | surname     | string |             | No       |
 | taxCode     | string |             | No       |
 
-#### service.CalculateTaxCodeRequest
+#### CalculateTaxCodeRequest
 
 | Name        | Type   | Description | Required |
 |-------------|--------|-------------|----------|
@@ -92,7 +92,7 @@ Calculate tax code starting from the data of a person.
 | province    | string |             | Yes      |
 | surname     | string |             | Yes      |
 
-#### service.CalculateTaxCodeResponse
+#### CalculateTaxCodeResponse
 
 | Name    | Type   | Description | Required |
 |---------|--------|-------------|----------|
