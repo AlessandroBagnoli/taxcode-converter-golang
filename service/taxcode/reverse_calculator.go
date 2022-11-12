@@ -9,21 +9,6 @@ import (
 	"time"
 )
 
-var charMonthMap = map[string]int{
-	"A": 1,
-	"B": 2,
-	"C": 3,
-	"D": 4,
-	"E": 5,
-	"H": 6,
-	"L": 7,
-	"M": 8,
-	"P": 9,
-	"R": 10,
-	"S": 11,
-	"T": 12,
-}
-
 func reverseTaxCode(tc string, cityExtractor func(string) *service.CityCSV) (*service.CalculatePersonDataResponse, error) {
 	taxCode := strings.ToUpper(tc)
 	// surname + name
