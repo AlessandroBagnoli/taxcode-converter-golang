@@ -72,7 +72,7 @@ func calculate(req service.CalculateTaxCodeRequest, cityExtractor func(place ser
 	}
 	city := cityExtractor(place)
 	if city == nil {
-		return nil, service.NewCityNotPresentError(fmt.Sprintf("The city %s and province %s do not exixts", cityName, province))
+		return nil, service.NewCityNotPresentError(fmt.Sprintf("The city %s and province %s do not exixt", cityName, province))
 	}
 	fiscalCode.WriteString(city.Code)
 
