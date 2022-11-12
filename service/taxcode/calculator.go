@@ -10,11 +10,11 @@ import (
 	"time"
 )
 
-func calculate(req service.CalculateTaxCodeRequest, cityExtractor func(place service.Place) *service.CityCSV) (*service.CalculateTaxCodeResponse, error) {
+func calculate(req service.CalculateTaxCodeRequest, cityExtractor func(place service.Place) *service.CityCSV) (string, error) {
 	var fiscalCode bytes.Buffer
 	regex := regexp.MustCompile("[^A-Z]")
-	fcSurname := regex.ReplaceAllString(strings.ReplaceAll(strings.ToUpper(req.Surname), " ", ""), " ")
-	fcName := regex.ReplaceAllString(strings.ReplaceAll(strings.ToUpper(req.Name), " ", ""), " ")
+	fcSurname := regex.ReplaceAllString(strings.ToUpper(req.Surname), "")
+	fcName := regex.ReplaceAllString(strings.ToUpper(req.Name), "")
 	fcBirthDate := req.DateOfBirth.In(time.UTC).Format("02-01-2006")
 
 	// surname
@@ -73,7 +73,7 @@ func calculate(req service.CalculateTaxCodeRequest, cityExtractor func(place ser
 	}
 	city := cityExtractor(place)
 	if city == nil {
-		return nil, service.NewCityNotPresentError(fmt.Sprintf("The city %s and province %s do not exixt", cityName, province))
+		return "", service.NewCityNotPresentError(fmt.Sprintf("The city %s and province %s do not exixt", cityName, province))
 	}
 	fiscalCode.WriteString(city.Code)
 
@@ -84,7 +84,7 @@ func calculate(req service.CalculateTaxCodeRequest, cityExtractor func(place ser
 	controlCharacter := controlCharMap[controlInteger]
 	fiscalCode.WriteString(controlCharacter)
 
-	return &service.CalculateTaxCodeResponse{TaxCode: fiscalCode.String()}, nil
+	return fiscalCode.String(), nil
 }
 
 func reduce[T, M any](s []T, initValue M, op func(M, T) M) M {
