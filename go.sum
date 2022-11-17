@@ -1,5 +1,5 @@
-cloud.google.com/go v0.106.0 h1:AWaMWuZb2oFeiV91OfNHZbmwUhMVuXEaLPm9sqDAOl8=
-cloud.google.com/go v0.106.0/go.mod h1:5NEGxGuIeMQiPaWLwLYZ7kfNWiP6w1+QJK+xqyIT+dw=
+cloud.google.com/go v0.107.0 h1:qkj22L7bgkl6vIeZDlOY2po43Mx/TIa2Wsa7VR+PEww=
+cloud.google.com/go v0.107.0/go.mod h1:wpc2eNrD7hXUTy8EKS10jkxpZBjASrORK7goS+3YX2I=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/KyleBanks/depth v1.2.1 h1:5h8fQADFrWtarTdtDudMmGsC7GPbOAu6RVB3ffsVFHc=
 github.com/KyleBanks/depth v1.2.1/go.mod h1:jzSb9d0L43HxTQfT+oSA1EEp2q+ne2uh6XgeJcm8brE=
