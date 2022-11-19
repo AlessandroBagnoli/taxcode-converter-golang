@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go v0.107.0
 	github.com/go-playground/validator/v10 v10.11.1
 	github.com/gocarina/gocsv v0.0.0-20221105105431-c8ef78125b99
-	github.com/gofiber/fiber/v2 v2.39.0
+	github.com/gofiber/fiber/v2 v2.40.0
 	github.com/gofiber/swagger v0.1.7
 	github.com/mvmaasakkers/go-problemdetails v1.0.0
 	github.com/sirupsen/logrus v1.9.0
