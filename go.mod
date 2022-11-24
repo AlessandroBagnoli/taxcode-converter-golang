@@ -7,11 +7,11 @@ require (
 	github.com/go-playground/validator/v10 v10.11.1
 	github.com/gocarina/gocsv v0.0.0-20221105105431-c8ef78125b99
 	github.com/gofiber/fiber/v2 v2.40.1
-	github.com/gofiber/swagger v0.1.7
+	github.com/gofiber/swagger v0.1.8
 	github.com/mvmaasakkers/go-problemdetails v1.0.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.8.1
-	github.com/swaggo/swag v1.8.7
+	github.com/swaggo/swag v1.8.8
 	golang.org/x/exp v0.0.0-20221114191408-850992195362
 )
 
