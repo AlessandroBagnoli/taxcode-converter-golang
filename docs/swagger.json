@@ -153,10 +153,14 @@
                     "format": "date"
                 },
                 "gender": {
-                    "type": "string",
                     "enum": [
                         "MALE",
                         "FEMALE"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/service.Gender"
+                        }
                     ]
                 },
                 "name": {
@@ -192,10 +196,14 @@
                     "format": "date"
                 },
                 "gender": {
-                    "type": "string",
                     "enum": [
                         "MALE",
                         "FEMALE"
+                    ],
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/service.Gender"
+                        }
                     ]
                 },
                 "name": {
@@ -216,6 +224,19 @@
                     "type": "string"
                 }
             }
+        },
+        "service.Gender": {
+            "type": "string",
+            "enum": [
+                "UNKNOWN",
+                "MALE",
+                "FEMALE"
+            ],
+            "x-enum-varnames": [
+                "GenderUnknown",
+                "GenderMale",
+                "GenderFemale"
+            ]
         }
     }
 }

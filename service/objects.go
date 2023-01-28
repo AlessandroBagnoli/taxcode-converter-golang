@@ -42,9 +42,9 @@ const (
 	// GenderUnknown unknown gender
 	GenderUnknown Gender = "UNKNOWN"
 	// GenderMale male gender
-	GenderMale = "MALE"
+	GenderMale Gender = "MALE"
 	// GenderFemale female gender
-	GenderFemale = "FEMALE"
+	GenderFemale Gender = "FEMALE"
 )
 
 type CityCSV struct {
