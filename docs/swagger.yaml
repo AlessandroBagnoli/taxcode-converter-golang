@@ -52,10 +52,11 @@ definitions:
         format: date
         type: string
       gender:
+        allOf:
+          - $ref: '#/definitions/service.Gender'
         enum:
-        - MALE
-        - FEMALE
-        type: string
+          - MALE
+          - FEMALE
       name:
         type: string
       province:
@@ -73,10 +74,11 @@ definitions:
         format: date
         type: string
       gender:
+        allOf:
+          - $ref: '#/definitions/service.Gender'
         enum:
-        - MALE
-        - FEMALE
-        type: string
+          - MALE
+          - FEMALE
       name:
         type: string
       province:
@@ -84,18 +86,28 @@ definitions:
       surname:
         type: string
     required:
-    - birthPlace
+      - birthPlace
     - dateOfBirth
-    - gender
-    - name
-    - province
-    - surname
+      - gender
+      - name
+      - province
+      - surname
     type: object
   service.CalculateTaxCodeResponse:
     properties:
       taxCode:
         type: string
     type: object
+  service.Gender:
+    enum:
+      - UNKNOWN
+      - MALE
+      - FEMALE
+    type: string
+    x-enum-varnames:
+      - GenderUnknown
+      - GenderMale
+      - GenderFemale
 host: localhost:8080
 info:
   contact: {}
