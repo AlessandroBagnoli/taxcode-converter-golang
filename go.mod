@@ -7,7 +7,7 @@ require (
 	github.com/go-playground/validator/v10 v10.11.2
 	github.com/gocarina/gocsv v0.0.0-20230123225133-763e25b40669
 	github.com/gofiber/fiber/v2 v2.42.0
-	github.com/gofiber/swagger v0.1.8
+	github.com/gofiber/swagger v0.1.9
 	github.com/mvmaasakkers/go-problemdetails v1.0.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.8.1
