@@ -3,7 +3,7 @@ module taxcode-converter
 go 1.19
 
 require (
-	cloud.google.com/go v0.109.0
+	cloud.google.com/go v0.110.0
 	github.com/go-playground/validator/v10 v10.11.2
 	github.com/gocarina/gocsv v0.0.0-20230123225133-763e25b40669
 	github.com/gofiber/fiber/v2 v2.42.0
@@ -45,9 +45,9 @@ require (
 	github.com/valyala/fasthttp v1.44.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/crypto v0.5.0 // indirect
-	golang.org/x/net v0.5.0 // indirect
-	golang.org/x/sys v0.4.0 // indirect
-	golang.org/x/text v0.6.0 // indirect
+	golang.org/x/net v0.6.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
+	golang.org/x/text v0.7.0 // indirect
 	golang.org/x/tools v0.5.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
