@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	cloud.google.com/go v0.110.0
-	github.com/go-playground/validator/v10 v10.12.0
+	github.com/go-playground/validator/v10 v10.13.0
 	github.com/gocarina/gocsv v0.0.0-20230226133904-70c27cb2918a
 	github.com/gofiber/fiber/v2 v2.44.0
 	github.com/gofiber/swagger v0.1.11
@@ -28,7 +28,7 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/klauspost/compress v1.16.3 // indirect
-	github.com/leodido/go-urn v1.2.2 // indirect
+	github.com/leodido/go-urn v1.2.3 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.18 // indirect
