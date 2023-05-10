@@ -3,7 +3,7 @@ module taxcode-converter
 go 1.20
 
 require (
-	cloud.google.com/go v0.110.1
+	cloud.google.com/go v0.110.2
 	github.com/go-playground/validator/v10 v10.13.0
 	github.com/gocarina/gocsv v0.0.0-20230226133904-70c27cb2918a
 	github.com/gofiber/fiber/v2 v2.45.0
