@@ -9,7 +9,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.45.0
 	github.com/gofiber/swagger v0.1.11
 	github.com/mvmaasakkers/go-problemdetails v1.0.0
-	github.com/sirupsen/logrus v1.9.0
+	github.com/sirupsen/logrus v1.9.1
 	github.com/stretchr/testify v1.8.2
 	github.com/swaggo/swag v1.16.1
 	golang.org/x/exp v0.0.0-20230304125523-9ff063c70017
