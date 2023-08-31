@@ -11,7 +11,7 @@ require (
 	github.com/mvmaasakkers/go-problemdetails v1.0.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
-	github.com/swaggo/swag v1.16.1
+	github.com/swaggo/swag v1.16.2
 	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63
 )
 
