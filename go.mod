@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go v0.110.7
 	github.com/go-playground/validator/v10 v10.15.4
 	github.com/gocarina/gocsv v0.0.0-20230616125104-99d496ca653d
-	github.com/gofiber/fiber/v2 v2.49.1
+	github.com/gofiber/fiber/v2 v2.49.2
 	github.com/gofiber/swagger v0.1.12
 	github.com/mvmaasakkers/go-problemdetails v1.0.0
 	github.com/sirupsen/logrus v1.9.3
@@ -47,7 +47,7 @@ require (
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/crypto v0.12.0 // indirect
 	golang.org/x/net v0.14.0 // indirect
-	golang.org/x/sys v0.11.0 // indirect
+	golang.org/x/sys v0.12.0 // indirect
 	golang.org/x/text v0.12.0 // indirect
 	golang.org/x/tools v0.12.1-0.20230815132531-74c255bcf846 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
