@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	cloud.google.com/go v0.110.10
-	github.com/go-playground/validator/v10 v10.15.5
+	github.com/go-playground/validator/v10 v10.16.0
 	github.com/gocarina/gocsv v0.0.0-20230616125104-99d496ca653d
 	github.com/gofiber/fiber/v2 v2.50.0
 	github.com/gofiber/swagger v0.1.14
